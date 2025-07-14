@@ -6,10 +6,11 @@ export {
     SOURCES,
     SHADOW_ITEM_MARKER_PROPERTY_NAME,
     SHADOW_PLACEHOLDER_ITEM_ID,
-    DND_PERMANENT_ID_KEY,
+    SHADOW_BACKUP_ID_KEY,
     DRAGGED_ELEMENT_ID,
     overrideItemIdKeyNameBeforeInitialisingDndZones,
-    setDebugMode
+    setDebugMode,
+    getTrueId
 } from "./constants";
 
 export {setFeatureFlag, FEATURE_FLAG_NAMES} from "./featureFlags";

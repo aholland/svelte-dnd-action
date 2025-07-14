@@ -1,58 +1,58 @@
-const vt = "finalize", Ot = "consider";
+const Ot = "finalize", At = "consider";
 function te(e, t, n) {
-  e.dispatchEvent(
-    new CustomEvent(vt, {
-      detail: { items: t, info: n }
-    })
-  );
-}
-function V(e, t, n) {
   e.dispatchEvent(
     new CustomEvent(Ot, {
       detail: { items: t, info: n }
     })
   );
 }
-const Oe = "draggedEntered", fe = "draggedLeft", Ae = "draggedOverIndex", ze = "draggedLeftDocument", Ee = {
+function V(e, t, n) {
+  e.dispatchEvent(
+    new CustomEvent(At, {
+      detail: { items: t, info: n }
+    })
+  );
+}
+const Oe = "draggedEntered", fe = "draggedLeft", Ae = "draggedOverIndex", Ge = "draggedLeftDocument", Ee = {
   LEFT_FOR_ANOTHER: "leftForAnother",
   OUTSIDE_OF_ANY: "outsideOfAny"
 };
-function At(e, t, n) {
+function _t(e, t, n) {
   e.dispatchEvent(
     new CustomEvent(Oe, {
       detail: { indexObj: t, draggedEl: n }
     })
   );
 }
-function _t(e, t, n) {
+function It(e, t, n) {
   e.dispatchEvent(
     new CustomEvent(fe, {
       detail: { draggedEl: t, type: Ee.LEFT_FOR_ANOTHER, theOtherDz: n }
     })
   );
 }
-function It(e, t) {
+function xt(e, t) {
   e.dispatchEvent(
     new CustomEvent(fe, {
       detail: { draggedEl: t, type: Ee.OUTSIDE_OF_ANY }
     })
   );
 }
-function xt(e, t, n) {
+function Rt(e, t, n) {
   e.dispatchEvent(
     new CustomEvent(Ae, {
       detail: { indexObj: t, draggedEl: n }
     })
   );
 }
-function Rt(e) {
+function St(e) {
   window.dispatchEvent(
-    new CustomEvent(ze, {
+    new CustomEvent(Ge, {
       detail: { draggedEl: e }
     })
   );
 }
-const I = {
+const x = {
   DRAG_STARTED: "dragStarted",
   DRAGGED_ENTERED: Oe,
   DRAGGED_ENTERED_ANOTHER: "dragEnteredAnother",
@@ -63,15 +63,15 @@ const I = {
   DROPPED_INTO_ANOTHER: "droppedIntoAnother",
   DROPPED_OUTSIDE_OF_ANY: "droppedOutsideOfAny",
   DRAG_STOPPED: "dragStopped"
-}, x = {
+}, R = {
   POINTER: "pointer",
   KEYBOARD: "keyboard"
-}, le = "isDndShadowItem", _e = "data-is-dnd-shadow-item-internal", St = "data-is-dnd-shadow-item-hint", Nt = "id:dnd-shadow-placeholder-0000", Lt = "dnd-action-dragged-el", Ct = "dndPermanentId";
-let R = "id", De = 0;
-function nt() {
+}, le = "isDndShadowItem", _e = "data-is-dnd-shadow-item-internal", Nt = "data-is-dnd-shadow-item-hint", Lt = "id:dnd-shadow-placeholder-0000", Ct = "dnd-action-dragged-el", Ce = "dndShadowBackupId";
+let O = "id", De = 0;
+function rt() {
   De++;
 }
-function rt() {
+function it() {
   if (De === 0)
     throw new Error("Bug! trying to decrement when there are no dropzones");
   De--;
@@ -81,19 +81,22 @@ function xn(e) {
     throw new Error("can only override the id key before initialising any dndzone");
   if (typeof e != "string")
     throw new Error("item id key has to be a string");
-  u(() => ["overriding item id key name", e]), R = e;
+  u(() => ["overriding item id key name", e]), O = e;
 }
-const Ge = typeof window > "u";
+function Rn(e) {
+  return e[Ce] ? e[Ce] : e[O];
+}
+const Be = typeof window > "u";
 let u = () => {
 };
-function Rn(e) {
+function Sn(e) {
   e ? u = (t, n = console.debug) => {
     const r = t();
     Array.isArray(r) ? n(...r) : n(r);
   } : u = () => {
   };
 }
-function Ce(e, t = !0) {
+function Me(e, t = !0) {
   let n;
   const r = t ? $t(e) : e.getBoundingClientRect(), i = getComputedStyle(e), o = i.transform;
   if (o) {
@@ -118,17 +121,8 @@ function Ce(e, t = !0) {
   } else
     return r;
 }
-function it(e) {
-  const t = Ce(e);
-  return {
-    top: t.top + window.scrollY,
-    bottom: t.bottom + window.scrollY,
-    left: t.left + window.scrollX,
-    right: t.right + window.scrollX
-  };
-}
 function ot(e) {
-  const t = e.getBoundingClientRect();
+  const t = Me(e);
   return {
     top: t.top + window.scrollY,
     bottom: t.bottom + window.scrollY,
@@ -137,6 +131,15 @@ function ot(e) {
   };
 }
 function st(e) {
+  const t = e.getBoundingClientRect();
+  return {
+    top: t.top + window.scrollY,
+    bottom: t.bottom + window.scrollY,
+    left: t.left + window.scrollX,
+    right: t.right + window.scrollX
+  };
+}
+function at(e) {
   return {
     x: (e.left + e.right) / 2,
     y: (e.top + e.bottom) / 2
@@ -149,10 +152,10 @@ function Ie(e, t) {
   return e.y <= t.bottom && e.y >= t.top && e.x >= t.left && e.x <= t.right;
 }
 function ce(e) {
-  return st(ot(e));
+  return at(st(e));
 }
-function He(e, t) {
-  const n = ce(e), r = it(t);
+function We(e, t) {
+  const n = ce(e), r = ot(t);
   return Ie(n, r);
 }
 function Pt(e, t) {
@@ -160,7 +163,7 @@ function Pt(e, t) {
   return Mt(n, r);
 }
 function Ft(e) {
-  const t = ot(e);
+  const t = st(e);
   return t.right < 0 || t.left > document.documentElement.scrollWidth || t.bottom < 0 || t.top > document.documentElement.scrollHeight;
 }
 function $t(e) {
@@ -185,24 +188,24 @@ function $t(e) {
   };
 }
 let J;
-function Be() {
+function Ze() {
   u(() => "resetting indexes cache"), J = /* @__PURE__ */ new Map();
 }
-Be();
+Ze();
 function kt(e) {
   const t = Array.from(e.children).findIndex((n) => n.getAttribute(_e));
   if (t >= 0)
-    return J.has(e) || J.set(e, /* @__PURE__ */ new Map()), J.get(e).set(t, it(e.children[t])), t;
+    return J.has(e) || J.set(e, /* @__PURE__ */ new Map()), J.get(e).set(t, ot(e.children[t])), t;
 }
 function zt(e, t) {
-  if (!He(e, t))
+  if (!We(e, t))
     return null;
   const n = t.children;
   if (n.length === 0)
     return { index: 0, isProximityBased: !0 };
   const r = kt(t);
   for (let a = 0; a < n.length; a++)
-    if (He(e, n[a])) {
+    if (We(e, n[a])) {
       const s = J.has(t) && J.get(t).get(a);
       return s && !Ie(ce(e), s) ? { index: r, isProximityBased: !1 } : { index: a, isProximityBased: !1 };
     }
@@ -219,10 +222,10 @@ function k(e) {
 function ye(e) {
   if (!e)
     throw new Error("cannot get depth of a falsy node");
-  return at(e, 0);
+  return dt(e, 0);
 }
-function at(e, t = 0) {
-  return e.parentElement ? at(e.parentElement, t + 1) : t - 1;
+function dt(e, t = 0) {
+  return e.parentElement ? dt(e.parentElement, t + 1) : t - 1;
 }
 function Gt(e, t) {
   if (Object.keys(e).length !== Object.keys(t).length)
@@ -240,38 +243,38 @@ function Bt(e, t) {
       return !1;
   return !0;
 }
-const Zt = 200, We = 10;
-let Me;
+const Zt = 200, Ye = 10;
+let Pe;
 function Ut(e, t, n = Zt, r) {
   let i, o, a = !1, s;
   const c = Array.from(t).sort((l, m) => ye(m) - ye(l));
   function g() {
     const l = ce(e), m = r.multiScrollIfNeeded();
-    if (!m && s && Math.abs(s.x - l.x) < We && Math.abs(s.y - l.y) < We) {
-      Me = window.setTimeout(g, n);
+    if (!m && s && Math.abs(s.x - l.x) < Ye && Math.abs(s.y - l.y) < Ye) {
+      Pe = window.setTimeout(g, n);
       return;
     }
     if (Ft(e)) {
-      u(() => "off document"), Rt(e);
+      u(() => "off document"), St(e);
       return;
     }
     s = l;
     let d = !1;
     for (const f of c) {
-      m && Be();
+      m && Ze();
       const h = zt(e, f);
       if (h === null)
         continue;
       const { index: L } = h;
-      d = !0, f !== i ? (i && _t(i, e, f), At(f, h, e), i = f) : L !== o && (xt(f, h, e), o = L);
+      d = !0, f !== i ? (i && It(i, e, f), _t(f, h, e), i = f) : L !== o && (Rt(f, h, e), o = L);
       break;
     }
-    !d && a && i ? (It(i, e), i = void 0, o = void 0, a = !1) : a = !0, Me = window.setTimeout(g, n);
+    !d && a && i ? (xt(i, e), i = void 0, o = void 0, a = !1) : a = !0, Pe = window.setTimeout(g, n);
   }
   g();
 }
 function Ht() {
-  u(() => "unobserving"), clearTimeout(Me), Be();
+  u(() => "unobserving"), clearTimeout(Pe), Ze();
 }
 const oe = 30;
 function Wt() {
@@ -317,7 +320,7 @@ function Yt(e, t) {
 }
 function Vt(e = [], t) {
   u(() => "creating multi-scroller");
-  const n = Xt(e), r = Array.from(n).sort((s, c) => ye(c) - ye(s)), { scrollIfNeeded: i, resetScrolling: o } = Wt();
+  const n = Kt(e), r = Array.from(n).sort((s, c) => ye(c) - ye(s)), { scrollIfNeeded: i, resetScrolling: o } = Wt();
   function a() {
     const s = t();
     if (!s || !r)
@@ -346,13 +349,13 @@ function jt(e) {
   }
   return t;
 }
-function Xt(e) {
+function Kt(e) {
   const t = /* @__PURE__ */ new Set();
   for (let n of e)
     jt(n).forEach((r) => t.add(r));
   return (document.scrollingElement.scrollHeight > document.scrollingElement.clientHeight || document.scrollingElement.scrollWidth > document.scrollingElement.clientHeight) && t.add(document.scrollingElement), t;
 }
-function Kt(e) {
+function Xt(e) {
   const t = e.cloneNode(!0), n = [], r = e.tagName === "SELECT", i = r ? [e] : [...e.querySelectorAll("select")];
   for (const s of i)
     n.push(s.value);
@@ -376,29 +379,29 @@ function Kt(e) {
 const q = Object.freeze({
   // This flag exists as a workaround for issue 454 (basically a browser bug) - seems like these rect values take time to update when in grid layout. Setting it to true can cause strange behaviour in the REPL for non-grid zones, see issue 470
   USE_COMPUTED_STYLE_INSTEAD_OF_BOUNDING_RECT: "USE_COMPUTED_STYLE_INSTEAD_OF_BOUNDING_RECT"
-}), dt = {
+}), lt = {
   [q.USE_COMPUTED_STYLE_INSTEAD_OF_BOUNDING_RECT]: !1
 };
-function Sn(e, t) {
+function Nn(e, t) {
   if (!q[e])
     throw new Error(`Can't set non existing feature flag ${e}! Supported flags: ${Object.keys(q)}`);
-  dt[e] = !!t;
+  lt[e] = !!t;
 }
-function lt(e) {
+function ct(e) {
   if (!q[e])
     throw new Error(`Can't get non existing feature flag ${e}! Supported flags: ${Object.keys(q)}`);
-  return dt[e];
+  return lt[e];
 }
 const qt = 0.2;
 function j(e) {
   return `${e} ${qt}s ease`;
 }
 function Jt(e, t) {
-  const n = e.getBoundingClientRect(), r = Kt(e);
-  ct(e, r), r.id = Lt, r.style.position = "fixed";
+  const n = e.getBoundingClientRect(), r = Xt(e);
+  ut(e, r), r.id = Ct, r.style.position = "fixed";
   let i = n.top, o = n.left;
   if (r.style.top = `${i}px`, r.style.left = `${o}px`, t) {
-    const a = st(n);
+    const a = at(n);
     i -= a.y - t.y, o -= a.x - t.x, window.setTimeout(() => {
       r.style.top = `${i}px`, r.style.left = `${o}px`;
     }, 0);
@@ -409,27 +412,27 @@ function Qt(e) {
   e.style.cursor = "grab";
 }
 function en(e, t, n, r) {
-  ct(t, e);
+  ut(t, e);
   const i = t.getBoundingClientRect(), o = e.getBoundingClientRect(), a = i.width - o.width, s = i.height - o.height;
   if (a || s) {
     const c = {
       left: (n - o.left) / o.width,
       top: (r - o.top) / o.height
     };
-    lt(q.USE_COMPUTED_STYLE_INSTEAD_OF_BOUNDING_RECT) || (e.style.height = `${i.height}px`, e.style.width = `${i.width}px`), e.style.left = `${parseFloat(e.style.left) - c.left * a}px`, e.style.top = `${parseFloat(e.style.top) - c.top * s}px`;
+    ct(q.USE_COMPUTED_STYLE_INSTEAD_OF_BOUNDING_RECT) || (e.style.height = `${i.height}px`, e.style.width = `${i.width}px`), e.style.left = `${parseFloat(e.style.left) - c.left * a}px`, e.style.top = `${parseFloat(e.style.top) - c.top * s}px`;
   }
 }
-function ct(e, t) {
+function ut(e, t) {
   const n = window.getComputedStyle(e);
   Array.from(n).filter(
     (r) => r.startsWith("background") || r.startsWith("padding") || r.startsWith("font") || r.startsWith("text") || r.startsWith("align") || r.startsWith("justify") || r.startsWith("display") || r.startsWith("flex") || r.startsWith("border") || r === "opacity" || r === "color" || r === "list-style-type" || // copying with and height to make up for rect update timing issues in some browsers
-    lt(q.USE_COMPUTED_STYLE_INSTEAD_OF_BOUNDING_RECT) && (r === "width" || r === "height")
+    ct(q.USE_COMPUTED_STYLE_INSTEAD_OF_BOUNDING_RECT) && (r === "width" || r === "height")
   ).forEach((r) => t.style.setProperty(r, n.getPropertyValue(r), n.getPropertyPriority(r)));
 }
 function tn(e, t) {
   e.draggable = !1, e.ondragstart = () => !1, t ? (e.style.userSelect = "", e.style.WebkitUserSelect = "", e.style.cursor = "") : (e.style.userSelect = "none", e.style.WebkitUserSelect = "none", e.style.cursor = "grab");
 }
-function ut(e) {
+function ft(e) {
   e.style.display = "none", e.style.position = "fixed", e.style.zIndex = "-5";
 }
 function nn(e) {
@@ -464,32 +467,32 @@ function on(e) {
     e.style.minHeight = t, e.style.minWidth = n;
   };
 }
-const sn = "--any--", an = 100, dn = 20, me = 3, ln = 80, Ye = {
+const sn = "--any--", an = 100, dn = 20, me = 3, ln = 80, Ve = {
   outline: "rgba(255, 255, 102, 0.7) solid 2px"
-}, Ve = "data-is-dnd-original-dragged-item";
-let O, T, M, xe, p, Re, ne, w, Z, A, W = !1, Ze = !1, Ue, ge = !1, se = [], de, U, ae = !1;
+}, je = "data-is-dnd-original-dragged-item";
+let A, T, M, xe, p, Re, ne, w, Z, _, W = !1, Ue = !1, He, ge = !1, se = [], de, U, ae = !1;
 const G = /* @__PURE__ */ new Map(), D = /* @__PURE__ */ new Map(), Le = /* @__PURE__ */ new WeakMap();
 function cn(e, t) {
-  u(() => "registering drop-zone if absent"), G.has(t) || G.set(t, /* @__PURE__ */ new Set()), G.get(t).has(e) || (G.get(t).add(e), nt());
+  u(() => "registering drop-zone if absent"), G.has(t) || G.set(t, /* @__PURE__ */ new Set()), G.get(t).has(e) || (G.get(t).add(e), rt());
 }
-function je(e, t) {
-  G.get(t).delete(e), rt(), G.get(t).size === 0 && G.delete(t);
+function Ke(e, t) {
+  G.get(t).delete(e), it(), G.get(t).size === 0 && G.delete(t);
 }
 function un() {
   u(() => "watching dragged element");
   const e = G.get(xe);
   for (const r of e)
-    r.addEventListener(Oe, ft), r.addEventListener(fe, gt), r.addEventListener(Ae, ht);
-  window.addEventListener(ze, re);
+    r.addEventListener(Oe, gt), r.addEventListener(fe, ht), r.addEventListener(Ae, mt);
+  window.addEventListener(Ge, re);
   const t = Math.max(...Array.from(e.keys()).map((r) => D.get(r).dropAnimationDurationMs)), n = t === 0 ? dn : Math.max(t, an);
-  de = Vt(e, () => A), Ut(T, e, n * 1.07, de);
+  de = Vt(e, () => _), Ut(T, e, n * 1.07, de);
 }
 function fn() {
   u(() => "unwatching dragged element");
   const e = G.get(xe);
   for (const t of e)
-    t.removeEventListener(Oe, ft), t.removeEventListener(fe, gt), t.removeEventListener(Ae, ht);
-  window.removeEventListener(ze, re), de && (de.destroy(), de = void 0), Ht();
+    t.removeEventListener(Oe, gt), t.removeEventListener(fe, ht), t.removeEventListener(Ae, mt);
+  window.removeEventListener(Ge, re), de && (de.destroy(), de = void 0), Ht();
 }
 function Se(e) {
   return e.findIndex((t) => !!t[le]);
@@ -498,11 +501,11 @@ function gn(e) {
   return {
     ...e,
     [le]: !0,
-    [R]: Nt,
-    [Ct]: e[R]
+    [O]: Lt,
+    [Ce]: e[O]
   };
 }
-function ft(e) {
+function gt(e) {
   u(() => ["dragged entered", e.currentTarget, e.detail]);
   let { items: t, dropFromOthersDisabled: n } = D.get(e.currentTarget);
   if (n && e.currentTarget !== p) {
@@ -512,15 +515,15 @@ function ft(e) {
   if (ge = !1, t = t.filter((a) => !a[le]), u(() => `dragged entered items ${k(t)}`), p !== e.currentTarget) {
     const s = D.get(p).items.filter((c) => !c[le]);
     V(p, s, {
-      trigger: I.DRAGGED_ENTERED_ANOTHER,
-      id: M[R],
-      source: x.POINTER
+      trigger: x.DRAGGED_ENTERED_ANOTHER,
+      id: M[O],
+      source: R.POINTER
     });
   }
   const { index: r, isProximityBased: i } = e.detail.indexObj, o = i && r === e.currentTarget.children.length - 1 ? r + 1 : r;
-  w = e.currentTarget, t.splice(o, 0, ne), V(e.currentTarget, t, { trigger: I.DRAGGED_ENTERED, id: M[R], source: x.POINTER });
+  w = e.currentTarget, t.splice(o, 0, ne), V(e.currentTarget, t, { trigger: x.DRAGGED_ENTERED, id: M[O], source: R.POINTER });
 }
-function gt(e) {
+function ht(e) {
   if (!W) return;
   u(() => ["dragged left", e.currentTarget, e.detail]);
   const { items: t, dropFromOthersDisabled: n } = D.get(e.currentTarget);
@@ -537,18 +540,18 @@ function gt(e) {
     u(() => "dragged left all, putting shadow element back in the origin dz"), ge = !0, w = p;
     const c = o === p ? r : [...D.get(p).items];
     c.splice(Re, 0, ne), V(p, c, {
-      trigger: I.DRAGGED_LEFT_ALL,
-      id: M[R],
-      source: x.POINTER
+      trigger: x.DRAGGED_LEFT_ALL,
+      id: M[O],
+      source: R.POINTER
     });
   }
   V(e.currentTarget, r, {
-    trigger: I.DRAGGED_LEFT,
-    id: M[R],
-    source: x.POINTER
+    trigger: x.DRAGGED_LEFT,
+    id: M[O],
+    source: R.POINTER
   });
 }
-function ht(e) {
+function mt(e) {
   u(() => ["dragged is over index", e.currentTarget, e.detail]);
   const { items: t, dropFromOthersDisabled: n } = D.get(e.currentTarget);
   if (n && e.currentTarget !== p) {
@@ -558,15 +561,15 @@ function ht(e) {
   const r = [...t];
   ge = !1;
   const { index: i } = e.detail.indexObj, o = Se(r);
-  o !== -1 && r.splice(o, 1), r.splice(i, 0, ne), V(e.currentTarget, r, { trigger: I.DRAGGED_OVER_INDEX, id: M[R], source: x.POINTER });
+  o !== -1 && r.splice(o, 1), r.splice(i, 0, ne), V(e.currentTarget, r, { trigger: x.DRAGGED_OVER_INDEX, id: M[O], source: R.POINTER });
 }
 function Te(e) {
   e.preventDefault();
   const t = e.touches ? e.touches[0] : e;
-  A = { x: t.clientX, y: t.clientY }, T.style.transform = `translate3d(${A.x - Z.x}px, ${A.y - Z.y}px, 0)`;
+  _ = { x: t.clientX, y: t.clientY }, T.style.transform = `translate3d(${_.x - Z.x}px, ${_.y - Z.y}px, 0)`;
 }
 function re() {
-  u(() => "dropped"), Ze = !0, window.removeEventListener("mousemove", Te), window.removeEventListener("touchmove", Te), window.removeEventListener("mouseup", re), window.removeEventListener("touchend", re), fn(), Qt(T), w || (u(() => "element was dropped right after it left origin but before entering somewhere else"), w = p), u(() => ["dropped in dz", w]);
+  u(() => "dropped"), Ue = !0, window.removeEventListener("mousemove", Te), window.removeEventListener("touchmove", Te), window.removeEventListener("mouseup", re), window.removeEventListener("touchend", re), fn(), Qt(T), w || (u(() => "element was dropped right after it left origin but before entering somewhere else"), w = p), u(() => ["dropped in dz", w]);
   let { items: e, type: t } = D.get(w);
   we(
     G.get(t),
@@ -576,14 +579,14 @@ function re() {
   let n = Se(e);
   n === -1 && w === p && (n = Re), e = e.map((i) => i[le] ? M : i);
   function r() {
-    Ue(), te(w, e, {
-      trigger: ge ? I.DROPPED_OUTSIDE_OF_ANY : I.DROPPED_INTO_ZONE,
-      id: M[R],
-      source: x.POINTER
+    He(), te(w, e, {
+      trigger: ge ? x.DROPPED_OUTSIDE_OF_ANY : x.DROPPED_INTO_ZONE,
+      id: M[O],
+      source: R.POINTER
     }), w !== p && te(p, D.get(p).items, {
-      trigger: I.DROPPED_INTO_ANOTHER,
-      id: M[R],
-      source: x.POINTER
+      trigger: x.DROPPED_INTO_ANOTHER,
+      id: M[O],
+      source: R.POINTER
     });
     const i = Array.from(w.children).find((o) => o.getAttribute(_e));
     i && rn(i), pn();
@@ -591,7 +594,7 @@ function re() {
   D.get(w).dropAnimationDisabled ? r() : hn(n, r);
 }
 function hn(e, t) {
-  const n = e > -1 ? Ce(w.children[e], !1) : Ce(w, !1), r = {
+  const n = e > -1 ? Me(w.children[e], !1) : Me(w, !1), r = {
     x: n.left - parseFloat(T.style.left),
     y: n.top - parseFloat(T.style.top)
   }, { dropAnimationDurationMs: i } = D.get(w), o = `transform ${i}ms ease`;
@@ -599,11 +602,11 @@ function hn(e, t) {
 }
 function mn(e, t) {
   se.push({ dz: e, destroy: t }), window.requestAnimationFrame(() => {
-    ut(e), document.body.appendChild(e);
+    ft(e), document.body.appendChild(e);
   });
 }
 function pn() {
-  T && T.remove && T.remove(), O && O.remove && O.remove(), T = void 0, O = void 0, M = void 0, xe = void 0, p = void 0, Re = void 0, ne = void 0, w = void 0, Z = void 0, A = void 0, W = !1, Ze = !1, Ue = void 0, ge = !1, U && clearTimeout(U), U = void 0, ae = !1, se.length && (u(() => ["will destroy zones that were removed during drag", se]), se.forEach(({ dz: e, destroy: t }) => {
+  T && T.remove && T.remove(), A && A.remove && A.remove(), T = void 0, A = void 0, M = void 0, xe = void 0, p = void 0, Re = void 0, ne = void 0, w = void 0, Z = void 0, _ = void 0, W = !1, Ue = !1, He = void 0, ge = !1, U && clearTimeout(U), U = void 0, ae = !1, se.length && (u(() => ["will destroy zones that were removed during drag", se]), se.forEach(({ dz: e, destroy: t }) => {
     t(), e.remove();
   }), se = []);
 }
@@ -616,7 +619,7 @@ function En(e, t) {
     dragDisabled: !1,
     morphDisabled: !1,
     dropFromOthersDisabled: !1,
-    dropTargetStyle: Ye,
+    dropTargetStyle: Ve,
     dropTargetClasses: [],
     transformDraggedElement: () => {
     },
@@ -633,7 +636,7 @@ function En(e, t) {
     window.removeEventListener("mousemove", c), window.removeEventListener("touchmove", c), window.removeEventListener("mouseup", s), window.removeEventListener("touchend", s), U && (clearTimeout(U), U = void 0, ae = !1);
   }
   function s(d) {
-    if (a(), O = void 0, Z = void 0, A = void 0, d.type === "touchend") {
+    if (a(), A = void 0, Z = void 0, _ = void 0, d.type === "touchend") {
       const f = new Event("click", {
         bubbles: !0,
         cancelable: !0
@@ -644,10 +647,10 @@ function En(e, t) {
   function c(d) {
     const f = !!d.touches, h = f ? d.touches[0] : d;
     if (f && r.delayTouchStartMs > 0 && !ae) {
-      A = { x: h.clientX, y: h.clientY }, (Math.abs(A.x - Z.x) >= me || Math.abs(A.y - Z.y) >= me) && (U && (clearTimeout(U), U = void 0), s(d));
+      _ = { x: h.clientX, y: h.clientY }, (Math.abs(_.x - Z.x) >= me || Math.abs(_.y - Z.y) >= me) && (U && (clearTimeout(U), U = void 0), s(d));
       return;
     }
-    d.preventDefault(), A = { x: h.clientX, y: h.clientY }, (Math.abs(A.x - Z.x) >= me || Math.abs(A.y - Z.y) >= me) && (a(), l());
+    d.preventDefault(), _ = { x: h.clientX, y: h.clientY }, (Math.abs(_.x - Z.x) >= me || Math.abs(_.y - Z.y) >= me) && (a(), l());
   }
   function g(d) {
     if (d.target !== d.currentTarget && (d.target.value !== void 0 || d.target.isContentEditable)) {
@@ -665,28 +668,28 @@ function En(e, t) {
     const f = !!d.touches, h = f && r.delayTouchStartMs > 0;
     h || d.preventDefault(), d.stopPropagation();
     const L = f ? d.touches[0] : d;
-    Z = { x: L.clientX, y: L.clientY }, A = { ...Z }, O = d.currentTarget, h && (ae = !1, U = window.setTimeout(() => {
-      O && (ae = !0, a(), l());
+    Z = { x: L.clientX, y: L.clientY }, _ = { ...Z }, A = d.currentTarget, h && (ae = !1, U = window.setTimeout(() => {
+      A && (ae = !0, a(), l());
     }, r.delayTouchStartMs)), o();
   }
   function l() {
-    u(() => [`drag start config: ${k(r)}`, O]), W = !0;
-    const d = i.get(O);
-    Re = d, p = O.parentElement;
+    u(() => [`drag start config: ${k(r)}`, A]), W = !0;
+    const d = i.get(A);
+    Re = d, p = A.parentElement;
     const f = p.closest("dialog") || p.closest("[popover]") || p.getRootNode(), h = f.body || f, { items: L, type: H, centreDraggedOnCursor: B } = r, S = [...L];
-    M = S[d], xe = H, ne = gn(M), T = Jt(O, B && A), h.appendChild(T);
+    M = S[d], xe = H, ne = gn(M), T = Jt(A, B && _), h.appendChild(T);
     function N() {
-      if (!O) {
+      if (!A) {
         u(() => "originalDragTarget became undefined, aborting keepOriginalElementInDom");
         return;
       }
-      O.parentElement ? window.requestAnimationFrame(N) : (O.setAttribute(Ve, !0), h.appendChild(O), un(), ut(O), T.focus());
+      A.parentElement ? window.requestAnimationFrame(N) : (A.setAttribute(je, !0), h.appendChild(A), un(), ft(A), T.focus());
     }
     window.requestAnimationFrame(N), pe(
       Array.from(G.get(r.type)).filter((E) => E === p || !D.get(E).dropFromOthersDisabled),
       (E) => D.get(E).dropTargetStyle,
       (E) => D.get(E).dropTargetClasses
-    ), S.splice(d, 1, ne), Ue = on(p), V(p, S, { trigger: I.DRAG_STARTED, id: M[R], source: x.POINTER }), window.addEventListener("mousemove", Te, { passive: !1 }), window.addEventListener("touchmove", Te, { passive: !1, capture: !1 }), window.addEventListener("mouseup", re, { passive: !1 }), window.addEventListener("touchend", re, { passive: !1 });
+    ), S.splice(d, 1, ne), He = on(p), V(p, S, { trigger: x.DRAG_STARTED, id: M[O], source: R.POINTER }), window.addEventListener("mousemove", Te, { passive: !1 }), window.addEventListener("touchmove", Te, { passive: !1, capture: !1 }), window.addEventListener("mouseup", re, { passive: !1 }), window.addEventListener("touchend", re, { passive: !1 });
   }
   function m({
     items: d = void 0,
@@ -695,17 +698,17 @@ function En(e, t) {
     dragDisabled: L = !1,
     morphDisabled: H = !1,
     dropFromOthersDisabled: B = !1,
-    dropTargetStyle: S = Ye,
+    dropTargetStyle: S = Ve,
     dropTargetClasses: N = [],
     transformDraggedElement: E = () => {
     },
-    centreDraggedOnCursor: wt = !1,
-    dropAnimationDisabled: Tt = !1,
+    centreDraggedOnCursor: Tt = !1,
+    dropAnimationDisabled: bt = !1,
     delayTouchStart: ie = !1
   }) {
     r.dropAnimationDurationMs = f;
     let Ne = 0;
-    ie === !0 ? Ne = ln : typeof ie == "number" && isFinite(ie) && ie >= 0 && (Ne = ie), r.delayTouchStartMs = Ne, r.type && h !== r.type && je(e, r.type), r.type = h, r.items = [...d], r.dragDisabled = L, r.morphDisabled = H, r.transformDraggedElement = E, r.centreDraggedOnCursor = wt, r.dropAnimationDisabled = Tt, n && W && !Ze && (!Gt(S, r.dropTargetStyle) || !Bt(N, r.dropTargetClasses)) && (we(
+    ie === !0 ? Ne = ln : typeof ie == "number" && isFinite(ie) && ie >= 0 && (Ne = ie), r.delayTouchStartMs = Ne, r.type && h !== r.type && Ke(e, r.type), r.type = h, r.items = [...d], r.dragDisabled = L, r.morphDisabled = H, r.transformDraggedElement = E, r.centreDraggedOnCursor = Tt, r.dropAnimationDisabled = bt, n && W && !Ue && (!Gt(S, r.dropTargetStyle) || !Bt(N, r.dropTargetClasses)) && (we(
       [e],
       () => r.dropTargetStyle,
       () => N
@@ -726,11 +729,11 @@ function En(e, t) {
       (b) => he(b, "dropTargetStyle"),
       (b) => he(b, "dropTargetClasses")
     )), r.dropFromOthersDisabled = B, D.set(e, r), cn(e, h);
-    const bt = W ? Se(r.items) : -1;
+    const vt = W ? Se(r.items) : -1;
     for (let b = 0; b < e.children.length; b++) {
       const C = e.children[b];
-      if (tn(C, L), b === bt) {
-        H || en(T, C, A.x, A.y), r.transformDraggedElement(T, M, b), nn(C);
+      if (tn(C, L), b === vt) {
+        H || en(T, C, _.x, _.y), r.transformDraggedElement(T, M, b), nn(C);
         continue;
       }
       C.removeEventListener("mousedown", Le.get(C)), C.removeEventListener("touchstart", Le.get(C)), L || (C.addEventListener("mousedown", g), C.addEventListener("touchstart", g), Le.set(C, g)), i.set(C, b), n || (n = !0);
@@ -742,54 +745,54 @@ function En(e, t) {
     },
     destroy: () => {
       function d() {
-        u(() => "pointer dndzone will destroy"), je(e, D.get(e).type), D.delete(e);
+        u(() => "pointer dndzone will destroy"), Ke(e, D.get(e).type), D.delete(e);
       }
-      W && !e.closest(`[${Ve}]`) ? (u(() => "pointer dndzone will be scheduled for destruction"), mn(e, d)) : d();
+      W && !e.closest(`[${je}]`) ? (u(() => "pointer dndzone will be scheduled for destruction"), mn(e, d)) : d();
     }
   };
 }
-const Pe = {
+const Fe = {
   DND_ZONE_ACTIVE: "dnd-zone-active",
   DND_ZONE_DRAG_DISABLED: "dnd-zone-drag-disabled"
-}, mt = {
-  [Pe.DND_ZONE_ACTIVE]: "Tab to one the items and press space-bar or enter to start dragging it",
-  [Pe.DND_ZONE_DRAG_DISABLED]: "This is a disabled drag and drop list"
+}, pt = {
+  [Fe.DND_ZONE_ACTIVE]: "Tab to one the items and press space-bar or enter to start dragging it",
+  [Fe.DND_ZONE_DRAG_DISABLED]: "This is a disabled drag and drop list"
 }, Dn = "dnd-action-aria-alert";
 let y;
-function Fe() {
+function $e() {
   y || (y = document.createElement("div"), function() {
     y.id = Dn, y.style.position = "fixed", y.style.bottom = "0", y.style.left = "0", y.style.zIndex = "-5", y.style.opacity = "0", y.style.height = "0", y.style.width = "0", y.setAttribute("role", "alert");
-  }(), document.body.prepend(y), Object.entries(mt).forEach(([e, t]) => document.body.prepend(Tn(e, t))));
+  }(), document.body.prepend(y), Object.entries(pt).forEach(([e, t]) => document.body.prepend(Tn(e, t))));
 }
 function yn() {
-  return Ge ? null : (document.readyState === "complete" ? Fe() : window.addEventListener("DOMContentLoaded", Fe), { ...Pe });
+  return Be ? null : (document.readyState === "complete" ? $e() : window.addEventListener("DOMContentLoaded", $e), { ...Fe });
 }
 function wn() {
-  Ge || !y || (Object.keys(mt).forEach((e) => document.getElementById(e)?.remove()), y.remove(), y = void 0);
+  Be || !y || (Object.keys(pt).forEach((e) => document.getElementById(e)?.remove()), y.remove(), y = void 0);
 }
 function Tn(e, t) {
   const n = document.createElement("div");
   return n.id = e, n.innerHTML = `<p>${t}</p>`, n.style.display = "none", n.style.position = "fixed", n.style.zIndex = "-5", n;
 }
 function Q(e) {
-  if (Ge) return;
-  y || Fe(), y.innerHTML = "";
+  if (Be) return;
+  y || $e(), y.innerHTML = "";
   const t = document.createTextNode(e);
   y.appendChild(t), y.style.display = "none", y.style.display = "inline";
 }
 const bn = "--any--", Xe = {
   outline: "rgba(255, 255, 102, 0.7) solid 2px"
 };
-let P = !1, $e, _, K = "", X, F, Y = "";
-const be = /* @__PURE__ */ new WeakSet(), Ke = /* @__PURE__ */ new WeakMap(), qe = /* @__PURE__ */ new WeakMap(), ke = /* @__PURE__ */ new Map(), v = /* @__PURE__ */ new Map(), z = /* @__PURE__ */ new Map();
+let P = !1, ke, I, X = "", K, F, Y = "";
+const be = /* @__PURE__ */ new WeakSet(), qe = /* @__PURE__ */ new WeakMap(), Je = /* @__PURE__ */ new WeakMap(), ze = /* @__PURE__ */ new Map(), v = /* @__PURE__ */ new Map(), z = /* @__PURE__ */ new Map();
 let ve;
 function vn(e, t) {
-  u(() => "registering drop-zone if absent"), z.size === 0 && (u(() => "adding global keydown and click handlers"), ve = yn(), window.addEventListener("keydown", pt), window.addEventListener("click", Et)), z.has(t) || z.set(t, /* @__PURE__ */ new Set()), z.get(t).has(e) || (z.get(t).add(e), nt());
+  u(() => "registering drop-zone if absent"), z.size === 0 && (u(() => "adding global keydown and click handlers"), ve = yn(), window.addEventListener("keydown", Et), window.addEventListener("click", Dt)), z.has(t) || z.set(t, /* @__PURE__ */ new Set()), z.get(t).has(e) || (z.get(t).add(e), rt());
 }
-function Je(e, t) {
-  u(() => "unregistering drop-zone"), _ === e && ue(), z.get(t).delete(e), rt(), z.get(t).size === 0 && z.delete(t), z.size === 0 && (u(() => "removing global keydown and click handlers"), window.removeEventListener("keydown", pt), window.removeEventListener("click", Et), ve = void 0, wn());
+function Qe(e, t) {
+  u(() => "unregistering drop-zone"), I === e && ue(), z.get(t).delete(e), it(), z.get(t).size === 0 && z.delete(t), z.size === 0 && (u(() => "removing global keydown and click handlers"), window.removeEventListener("keydown", Et), window.removeEventListener("click", Dt), ve = void 0, wn());
 }
-function pt(e) {
+function Et(e) {
   if (P)
     switch (e.key) {
       case "Escape": {
@@ -798,30 +801,30 @@ function pt(e) {
       }
     }
 }
-function Et() {
+function Dt() {
   P && (be.has(document.activeElement) || (u(() => "clicked outside of any draggable"), ue()));
 }
 function On(e) {
   if (u(() => "zone focus"), !P) return;
   const t = e.currentTarget;
-  if (t === _) return;
-  K = t.getAttribute("aria-label") || "";
-  const { items: n } = v.get(_), r = n.find((g) => g[R] === F), i = n.indexOf(r), o = n.splice(i, 1)[0], { items: a, autoAriaDisabled: s } = v.get(t);
-  t.getBoundingClientRect().top < _.getBoundingClientRect().top || t.getBoundingClientRect().left < _.getBoundingClientRect().left ? (a.push(o), s || Q(`Moved item ${Y} to the end of the list ${K}`)) : (a.unshift(o), s || Q(`Moved item ${Y} to the beginning of the list ${K}`)), te(_, n, { trigger: I.DROPPED_INTO_ANOTHER, id: F, source: x.KEYBOARD }), te(t, a, { trigger: I.DROPPED_INTO_ZONE, id: F, source: x.KEYBOARD }), _ = t;
+  if (t === I) return;
+  X = t.getAttribute("aria-label") || "";
+  const { items: n } = v.get(I), r = n.find((g) => g[O] === F), i = n.indexOf(r), o = n.splice(i, 1)[0], { items: a, autoAriaDisabled: s } = v.get(t);
+  t.getBoundingClientRect().top < I.getBoundingClientRect().top || t.getBoundingClientRect().left < I.getBoundingClientRect().left ? (a.push(o), s || Q(`Moved item ${Y} to the end of the list ${X}`)) : (a.unshift(o), s || Q(`Moved item ${Y} to the beginning of the list ${X}`)), te(I, n, { trigger: x.DROPPED_INTO_ANOTHER, id: F, source: R.KEYBOARD }), te(t, a, { trigger: x.DROPPED_INTO_ZONE, id: F, source: R.KEYBOARD }), I = t;
 }
-function Dt() {
-  ke.forEach(({ update: e }, t) => e(v.get(t)));
+function yt() {
+  ze.forEach(({ update: e }, t) => e(v.get(t)));
 }
 function ue(e = !0) {
-  u(() => "drop"), v.get(_).autoAriaDisabled || Q(`Stopped dragging item ${Y}`), be.has(document.activeElement) && document.activeElement.blur(), e && V(_, v.get(_).items, {
-    trigger: I.DRAG_STOPPED,
+  u(() => "drop"), v.get(I).autoAriaDisabled || Q(`Stopped dragging item ${Y}`), be.has(document.activeElement) && document.activeElement.blur(), e && V(I, v.get(I).items, {
+    trigger: x.DRAG_STOPPED,
     id: F,
-    source: x.KEYBOARD
+    source: R.KEYBOARD
   }), we(
-    z.get($e),
+    z.get(ke),
     (t) => v.get(t).dropTargetStyle,
     (t) => v.get(t).dropTargetClasses
-  ), X = null, F = null, Y = "", $e = null, _ = null, K = "", P = !1, Dt();
+  ), K = null, F = null, Y = "", ke = null, I = null, X = "", P = !1, yt();
 }
 function An(e, t) {
   const n = {
@@ -852,7 +855,7 @@ function An(e, t) {
         if (!P) return;
         l.preventDefault(), l.stopPropagation();
         const { items: m } = v.get(e), d = Array.from(e.children), f = d.indexOf(l.currentTarget);
-        u(() => ["arrow down", f]), f < d.length - 1 && (n.autoAriaDisabled || Q(`Moved item ${Y} to position ${f + 2} in the list ${K}`), r(m, f, f + 1), te(e, m, { trigger: I.DROPPED_INTO_ZONE, id: F, source: x.KEYBOARD }));
+        u(() => ["arrow down", f]), f < d.length - 1 && (n.autoAriaDisabled || Q(`Moved item ${Y} to position ${f + 2} in the list ${X}`), r(m, f, f + 1), te(e, m, { trigger: x.DROPPED_INTO_ZONE, id: F, source: R.KEYBOARD }));
         break;
       }
       case "ArrowUp":
@@ -860,30 +863,30 @@ function An(e, t) {
         if (!P) return;
         l.preventDefault(), l.stopPropagation();
         const { items: m } = v.get(e), f = Array.from(e.children).indexOf(l.currentTarget);
-        u(() => ["arrow up", f]), f > 0 && (n.autoAriaDisabled || Q(`Moved item ${Y} to position ${f} in the list ${K}`), r(m, f, f - 1), te(e, m, { trigger: I.DROPPED_INTO_ZONE, id: F, source: x.KEYBOARD }));
+        u(() => ["arrow up", f]), f > 0 && (n.autoAriaDisabled || Q(`Moved item ${Y} to position ${f} in the list ${X}`), r(m, f, f - 1), te(e, m, { trigger: x.DROPPED_INTO_ZONE, id: F, source: R.KEYBOARD }));
         break;
       }
     }
   }
   function o(l) {
-    u(() => "drag start"), s(l.currentTarget), _ = e, $e = n.type, P = !0;
-    const m = Array.from(z.get(n.type)).filter((d) => d === _ || !v.get(d).dropFromOthersDisabled);
+    u(() => "drag start"), s(l.currentTarget), I = e, ke = n.type, P = !0;
+    const m = Array.from(z.get(n.type)).filter((d) => d === I || !v.get(d).dropFromOthersDisabled);
     if (pe(
       m,
       (d) => v.get(d).dropTargetStyle,
       (d) => v.get(d).dropTargetClasses
     ), !n.autoAriaDisabled) {
-      let d = `Started dragging item ${Y}. Use the arrow keys to move it within its list ${K}`;
+      let d = `Started dragging item ${Y}. Use the arrow keys to move it within its list ${X}`;
       m.length > 1 && (d += ", or tab to another list in order to move the item into it"), Q(d);
     }
-    V(e, v.get(e).items, { trigger: I.DRAG_STARTED, id: F, source: x.KEYBOARD }), Dt();
+    V(e, v.get(e).items, { trigger: x.DRAG_STARTED, id: F, source: R.KEYBOARD }), yt();
   }
   function a(l) {
-    P && l.currentTarget !== X && (l.stopPropagation(), ue(!1), o(l));
+    P && l.currentTarget !== K && (l.stopPropagation(), ue(!1), o(l));
   }
   function s(l) {
     const { items: m } = v.get(e), d = Array.from(e.children), f = d.indexOf(l);
-    X = l, X.tabIndex = n.zoneItemTabIndex, F = m[f][R], Y = d[f].getAttribute("aria-label") || "";
+    K = l, K.tabIndex = n.zoneItemTabIndex, F = m[f][O], Y = d[f].getAttribute("aria-label") || "";
   }
   function c({
     items: l = [],
@@ -896,10 +899,10 @@ function An(e, t) {
     dropTargetClasses: B = [],
     autoAriaDisabled: S = !1
   }) {
-    n.items = [...l], n.dragDisabled = d, n.dropFromOthersDisabled = L, n.zoneTabIndex = f, n.zoneItemTabIndex = h, n.dropTargetStyle = H, n.dropTargetClasses = B, n.autoAriaDisabled = S, n.type && m !== n.type && Je(e, n.type), n.type = m, vn(e, m), S || (e.setAttribute("aria-disabled", d), e.setAttribute("role", "list"), e.setAttribute("aria-describedby", d ? ve.DND_ZONE_DRAG_DISABLED : ve.DND_ZONE_ACTIVE)), v.set(e, n), P ? e.tabIndex = e === _ || X.contains(e) || n.dropFromOthersDisabled || _ && n.type !== v.get(_).type ? -1 : 0 : e.tabIndex = n.zoneTabIndex, e.addEventListener("focus", On);
+    n.items = [...l], n.dragDisabled = d, n.dropFromOthersDisabled = L, n.zoneTabIndex = f, n.zoneItemTabIndex = h, n.dropTargetStyle = H, n.dropTargetClasses = B, n.autoAriaDisabled = S, n.type && m !== n.type && Qe(e, n.type), n.type = m, vn(e, m), S || (e.setAttribute("aria-disabled", d), e.setAttribute("role", "list"), e.setAttribute("aria-describedby", d ? ve.DND_ZONE_DRAG_DISABLED : ve.DND_ZONE_ACTIVE)), v.set(e, n), P ? e.tabIndex = e === I || K.contains(e) || n.dropFromOthersDisabled || I && n.type !== v.get(I).type ? -1 : 0 : e.tabIndex = n.zoneTabIndex, e.addEventListener("focus", On);
     for (let N = 0; N < e.children.length; N++) {
       const E = e.children[N];
-      be.add(E), E.tabIndex = P ? -1 : n.zoneItemTabIndex, S || E.setAttribute("role", "listitem"), E.removeEventListener("keydown", Ke.get(E)), E.removeEventListener("click", qe.get(E)), d || (E.addEventListener("keydown", i), Ke.set(E, i), E.addEventListener("click", a), qe.set(E, a)), P && n.items[N][R] === F && (u(() => ["focusing on", { i: N, focusedItemId: F }]), X = E, X.tabIndex = n.zoneItemTabIndex, E.focus());
+      be.add(E), E.tabIndex = P ? -1 : n.zoneItemTabIndex, S || E.setAttribute("role", "listitem"), E.removeEventListener("keydown", qe.get(E)), E.removeEventListener("click", Je.get(E)), d || (E.addEventListener("keydown", i), qe.set(E, i), E.addEventListener("click", a), Je.set(E, a)), P && n.items[N][O] === F && (u(() => ["focusing on", { i: N, focusedItemId: F }]), K = E, K.tabIndex = n.zoneItemTabIndex, E.focus());
     }
   }
   c(t);
@@ -908,10 +911,10 @@ function An(e, t) {
       u(() => `keyboard dndzone will update newOptions: ${k(l)}`), c(l);
     },
     destroy: () => {
-      u(() => "keyboard dndzone will destroy"), Je(e, n.type), v.delete(e), ke.delete(e);
+      u(() => "keyboard dndzone will destroy"), Qe(e, n.type), v.delete(e), ze.delete(e);
     }
   };
-  return ke.set(e, g), g;
+  return ze.set(e, g), g;
 }
 function _n(e, t) {
   if (In(e))
@@ -921,11 +924,11 @@ function _n(e, t) {
       destroy: () => {
       }
     };
-  Qe(t);
+  et(t);
   const n = En(e, t), r = An(e, t);
   return {
     update: (i) => {
-      Qe(i), n.update(i), r.update(i);
+      et(i), n.update(i), r.update(i);
     },
     destroy: () => {
       n.destroy(), r.destroy();
@@ -933,9 +936,9 @@ function _n(e, t) {
   };
 }
 function In(e) {
-  return !!e.closest(`[${St}="true"]`);
+  return !!e.closest(`[${Nt}="true"]`);
 }
-function Qe(e) {
+function et(e) {
   const {
     items: t,
     flipDurationMs: n,
@@ -956,14 +959,14 @@ function Qe(e) {
   } = e;
   if (Object.keys(H).length > 0 && console.warn("dndzone will ignore unknown options", H), !t)
     throw new Error("no 'items' key provided to dndzone");
-  const B = t.find((S) => !{}.hasOwnProperty.call(S, R));
+  const B = t.find((S) => !{}.hasOwnProperty.call(S, O));
   if (B)
-    throw new Error(`missing '${R}' property for item ${k(B)}`);
+    throw new Error(`missing '${O}' property for item ${k(B)}`);
   if (l && !Array.isArray(l))
     throw new Error(`dropTargetClasses should be an array but instead it is a ${typeof l}, ${k(l)}`);
-  if (s && !et(s))
+  if (s && !tt(s))
     throw new Error(`zoneTabIndex should be a number but instead it is a ${typeof s}, ${k(s)}`);
-  if (c && !et(c))
+  if (c && !tt(c))
     throw new Error(`zoneItemTabIndex should be a number but instead it is a ${typeof c}, ${k(c)}`);
   if (h !== void 0 && h !== !1) {
     const S = h === !0, N = typeof h == "number" && isFinite(h) && h >= 0;
@@ -975,12 +978,12 @@ function Qe(e) {
       );
   }
 }
-function et(e) {
+function tt(e) {
   return !isNaN(e) && function(t) {
     return (t | 0) === t;
   }(parseFloat(e));
 }
-function yt(e) {
+function wt(e) {
   let t = e;
   const n = /* @__PURE__ */ new Set();
   return {
@@ -996,24 +999,24 @@ function yt(e) {
     }
   };
 }
-const $ = yt(!0), ee = yt(!1);
-function tt() {
+const $ = wt(!0), ee = wt(!1);
+function nt() {
   return {
     dragDisabled: ee.get() || $.get(),
     zoneItemTabIndex: -1
   };
 }
-function Nn(e, t) {
+function Ln(e, t) {
   ee.set(t?.dragDisabled ?? !1);
   let n = t;
   const r = _n(e, {
     ...n,
-    ...tt()
+    ...nt()
   });
   function i() {
     r.update({
       ...n,
-      ...tt()
+      ...nt()
     });
   }
   $.subscribe(i);
@@ -1021,13 +1024,13 @@ function Nn(e, t) {
     const {
       info: { source: c, trigger: g }
     } = s.detail;
-    c === x.KEYBOARD && g === I.DRAG_STOPPED && $.set(!0);
+    c === R.KEYBOARD && g === x.DRAG_STOPPED && $.set(!0);
   }
   function a(s) {
     const {
       info: { source: c }
     } = s.detail;
-    c === x.POINTER && $.set(!0);
+    c === R.POINTER && $.set(!0);
   }
   return e.addEventListener("consider", o), e.addEventListener("finalize", a), {
     update: (s) => {
@@ -1038,7 +1041,7 @@ function Nn(e, t) {
     }
   };
 }
-function Ln(e) {
+function Cn(e) {
   e.setAttribute("role", "button");
   function t(o) {
     o.preventDefault(), $.set(!1), window.addEventListener("mouseup", r), window.addEventListener("touchend", r);
@@ -1062,19 +1065,20 @@ function Ln(e) {
   };
 }
 export {
-  Ct as DND_PERMANENT_ID_KEY,
-  Lt as DRAGGED_ELEMENT_ID,
+  Ct as DRAGGED_ELEMENT_ID,
   q as FEATURE_FLAG_NAMES,
+  Ce as SHADOW_BACKUP_ID_KEY,
   le as SHADOW_ITEM_MARKER_PROPERTY_NAME,
-  Nt as SHADOW_PLACEHOLDER_ITEM_ID,
-  x as SOURCES,
-  I as TRIGGERS,
+  Lt as SHADOW_PLACEHOLDER_ITEM_ID,
+  R as SOURCES,
+  x as TRIGGERS,
   Q as alertToScreenReader,
   _n as dndzone,
-  Ln as dragHandle,
-  Nn as dragHandleZone,
+  Cn as dragHandle,
+  Ln as dragHandleZone,
+  Rn as getTrueId,
   xn as overrideItemIdKeyNameBeforeInitialisingDndZones,
-  Rn as setDebugMode,
-  Sn as setFeatureFlag
+  Sn as setDebugMode,
+  Nn as setFeatureFlag
 };
 //# sourceMappingURL=index.mjs.map

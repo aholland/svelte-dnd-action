@@ -6,7 +6,7 @@ import {
     SHADOW_ELEMENT_ATTRIBUTE_NAME,
     SHADOW_ITEM_MARKER_PROPERTY_NAME,
     SHADOW_PLACEHOLDER_ITEM_ID,
-    DND_PERMANENT_ID_KEY,
+    SHADOW_BACKUP_ID_KEY,
     SOURCES,
     TRIGGERS
 } from "./constants";
@@ -134,7 +134,7 @@ function createShadowElData(draggedElData) {
         ...draggedElData, 
         [SHADOW_ITEM_MARKER_PROPERTY_NAME]: true, 
         [ITEM_ID_KEY]: SHADOW_PLACEHOLDER_ITEM_ID,
-        [DND_PERMANENT_ID_KEY]: draggedElData[ITEM_ID_KEY]
+        [SHADOW_BACKUP_ID_KEY]: draggedElData[ITEM_ID_KEY]
     };
 }
 
