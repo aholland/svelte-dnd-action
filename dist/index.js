@@ -297,7 +297,6 @@
   var SHADOW_ITEM_MARKER_PROPERTY_NAME = "isDndShadowItem";
   var SHADOW_ELEMENT_ATTRIBUTE_NAME = "data-is-dnd-shadow-item-internal";
   var SHADOW_ELEMENT_HINT_ATTRIBUTE_NAME = "data-is-dnd-shadow-item-hint";
-  var SHADOW_PLACEHOLDER_ITEM_ID = "id:dnd-shadow-placeholder-0000";
   var DRAGGED_ELEMENT_ID = "dnd-action-dragged-el";
   var ITEM_ID_KEY = "id";
   var activeDndZoneCount = 0;
@@ -1449,7 +1448,7 @@
     });
   }
   function createShadowElData(draggedElData) {
-    return _objectSpread2(_objectSpread2({}, draggedElData), {}, _defineProperty(_defineProperty({}, SHADOW_ITEM_MARKER_PROPERTY_NAME, true), ITEM_ID_KEY, SHADOW_PLACEHOLDER_ITEM_ID));
+    return _objectSpread2(_objectSpread2({}, draggedElData), {}, _defineProperty({}, SHADOW_ITEM_MARKER_PROPERTY_NAME, true));
   }
 
   /* custom drag-events handlers */
@@ -1469,7 +1468,7 @@
     isDraggedOutsideOfAnyDz = false;
     // this deals with another race condition. in rare occasions (super rapid operations) the list hasn't updated yet
     items = items.filter(function (item) {
-      return item[ITEM_ID_KEY] !== shadowElData[ITEM_ID_KEY];
+      return !item[SHADOW_ITEM_MARKER_PROPERTY_NAME];
     });
     printDebug(function () {
       return "dragged entered items ".concat(toString(items));
@@ -1890,8 +1889,6 @@
           // have to watch before we hide, otherwise Svelte 5 $state gets confused
           watchDraggedElement();
           hideElement(originalDragTarget);
-          // after the removal of the original element we can give the shadow element the original item id so that the host zone can find it and render it correctly if it does lookups by id
-          shadowElData[ITEM_ID_KEY] = draggedElData[ITEM_ID_KEY];
           // to prevent the outline from disappearing
           draggedEl.focus();
         } else {
@@ -2826,7 +2823,6 @@
   exports.DRAGGED_ELEMENT_ID = DRAGGED_ELEMENT_ID;
   exports.FEATURE_FLAG_NAMES = FEATURE_FLAG_NAMES;
   exports.SHADOW_ITEM_MARKER_PROPERTY_NAME = SHADOW_ITEM_MARKER_PROPERTY_NAME;
-  exports.SHADOW_PLACEHOLDER_ITEM_ID = SHADOW_PLACEHOLDER_ITEM_ID;
   exports.SOURCES = SOURCES;
   exports.TRIGGERS = TRIGGERS;
   exports.alertToScreenReader = alertToScreenReader;

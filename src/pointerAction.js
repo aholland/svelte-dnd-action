@@ -5,7 +5,6 @@ import {
     printDebug,
     SHADOW_ELEMENT_ATTRIBUTE_NAME,
     SHADOW_ITEM_MARKER_PROPERTY_NAME,
-    SHADOW_PLACEHOLDER_ITEM_ID,
     SOURCES,
     TRIGGERS
 } from "./constants";
@@ -129,7 +128,7 @@ function findShadowElementIdx(items) {
     return items.findIndex(item => !!item[SHADOW_ITEM_MARKER_PROPERTY_NAME]);
 }
 function createShadowElData(draggedElData) {
-    return {...draggedElData, [SHADOW_ITEM_MARKER_PROPERTY_NAME]: true, [ITEM_ID_KEY]: SHADOW_PLACEHOLDER_ITEM_ID};
+    return {...draggedElData, [SHADOW_ITEM_MARKER_PROPERTY_NAME]: true};
 }
 
 /* custom drag-events handlers */
@@ -142,7 +141,7 @@ function handleDraggedEntered(e) {
     }
     isDraggedOutsideOfAnyDz = false;
     // this deals with another race condition. in rare occasions (super rapid operations) the list hasn't updated yet
-    items = items.filter(item => item[ITEM_ID_KEY] !== shadowElData[ITEM_ID_KEY]);
+    items = items.filter(item => !item[SHADOW_ITEM_MARKER_PROPERTY_NAME]);
     printDebug(() => `dragged entered items ${toString(items)}`);
 
     if (originDropZone !== e.currentTarget) {
@@ -507,8 +506,6 @@ export function dndzone(node, options) {
                 // have to watch before we hide, otherwise Svelte 5 $state gets confused
                 watchDraggedElement();
                 hideElement(originalDragTarget);
-                // after the removal of the original element we can give the shadow element the original item id so that the host zone can find it and render it correctly if it does lookups by id
-                shadowElData[ITEM_ID_KEY] = draggedElData[ITEM_ID_KEY];
                 // to prevent the outline from disappearing
                 draggedEl.focus();
             } else {
