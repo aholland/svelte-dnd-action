@@ -19,9 +19,9 @@ export const SOURCES = {
 };
 
 export const SHADOW_ITEM_MARKER_PROPERTY_NAME = "isDndShadowItem";
+export const SHADOW_ITEM_INTERNAL_KEY = "_dndShadowKey";
 export const SHADOW_ELEMENT_ATTRIBUTE_NAME = "data-is-dnd-shadow-item-internal";
 export const SHADOW_ELEMENT_HINT_ATTRIBUTE_NAME = "data-is-dnd-shadow-item-hint";
-export const SHADOW_ITEM_ORIGINAL_ID_PROPERTY_NAME = "_dndOriginalId";
 export const DRAGGED_ELEMENT_ID = "dnd-action-dragged-el";
 
 export let ITEM_ID_KEY = "id";
