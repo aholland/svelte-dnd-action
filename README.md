@@ -39,6 +39,12 @@ If you prefer a generic dnd list component that accepts different child componen
 **Pre-requisites**: svelte-3 (>=3.23.0)
 
 ```bash
+pnpm add -D svelte-dnd-action
+```
+
+or
+
+```bash
 yarn add -D svelte-dnd-action
 ```
 
