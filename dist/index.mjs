@@ -289,10 +289,11 @@ var SOURCES = {
   KEYBOARD: "keyboard"
 };
 var SHADOW_ITEM_MARKER_PROPERTY_NAME = "isDndShadowItem";
-var SHADOW_ITEM_ORIGINAL_DATA_KEY = "_dndOriginalData";
 var SHADOW_ELEMENT_ATTRIBUTE_NAME = "data-is-dnd-shadow-item-internal";
 var SHADOW_ELEMENT_HINT_ATTRIBUTE_NAME = "data-is-dnd-shadow-item-hint";
+var SHADOW_PLACEHOLDER_ITEM_ID = "id:dnd-shadow-placeholder-0000";
 var DRAGGED_ELEMENT_ID = "dnd-action-dragged-el";
+var DND_PERMANENT_ID_KEY = "dndPermanentId";
 var ITEM_ID_KEY = "id";
 var activeDndZoneCount = 0;
 function incrementActiveDropZoneCount() {
@@ -1443,10 +1444,7 @@ function findShadowElementIdx(items) {
   });
 }
 function createShadowElData(draggedElData) {
-  // Create a shadow item with a unique ID to avoid framework conflicts
-  // Store the original data for consumer access
-  var shadowId = "dnd-shadow-".concat(draggedElData[ITEM_ID_KEY], "-").concat(Date.now());
-  return _objectSpread2(_objectSpread2({}, draggedElData), {}, _defineProperty(_defineProperty(_defineProperty({}, ITEM_ID_KEY, shadowId), SHADOW_ITEM_MARKER_PROPERTY_NAME, true), SHADOW_ITEM_ORIGINAL_DATA_KEY, draggedElData));
+  return _objectSpread2(_objectSpread2({}, draggedElData), {}, _defineProperty(_defineProperty(_defineProperty({}, SHADOW_ITEM_MARKER_PROPERTY_NAME, true), ITEM_ID_KEY, SHADOW_PLACEHOLDER_ITEM_ID), DND_PERMANENT_ID_KEY, draggedElData[ITEM_ID_KEY]));
 }
 
 /* custom drag-events handlers */
@@ -2828,4 +2826,4 @@ function dragHandle(handle) {
   };
 }
 
-export { DRAGGED_ELEMENT_ID, FEATURE_FLAG_NAMES, SHADOW_ITEM_MARKER_PROPERTY_NAME, SHADOW_ITEM_ORIGINAL_DATA_KEY, SOURCES, TRIGGERS, alertToScreenReader, dndzone, dragHandle, dragHandleZone, overrideItemIdKeyNameBeforeInitialisingDndZones, setDebugMode, setFeatureFlag };
+export { DND_PERMANENT_ID_KEY, DRAGGED_ELEMENT_ID, FEATURE_FLAG_NAMES, SHADOW_ITEM_MARKER_PROPERTY_NAME, SHADOW_PLACEHOLDER_ITEM_ID, SOURCES, TRIGGERS, alertToScreenReader, dndzone, dragHandle, dragHandleZone, overrideItemIdKeyNameBeforeInitialisingDndZones, setDebugMode, setFeatureFlag };

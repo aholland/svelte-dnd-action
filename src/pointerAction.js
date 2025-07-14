@@ -5,7 +5,8 @@ import {
     printDebug,
     SHADOW_ELEMENT_ATTRIBUTE_NAME,
     SHADOW_ITEM_MARKER_PROPERTY_NAME,
-    SHADOW_ITEM_ORIGINAL_DATA_KEY,
+    SHADOW_PLACEHOLDER_ITEM_ID,
+    DND_PERMANENT_ID_KEY,
     SOURCES,
     TRIGGERS
 } from "./constants";
@@ -129,14 +130,11 @@ function findShadowElementIdx(items) {
     return items.findIndex(item => !!item[SHADOW_ITEM_MARKER_PROPERTY_NAME]);
 }
 function createShadowElData(draggedElData) {
-    // Create a shadow item with a unique ID to avoid framework conflicts
-    // Store the original data for consumer access
-    const shadowId = `dnd-shadow-${draggedElData[ITEM_ID_KEY]}-${Date.now()}`;
     return {
-        ...draggedElData,
-        [ITEM_ID_KEY]: shadowId,
-        [SHADOW_ITEM_MARKER_PROPERTY_NAME]: true,
-        [SHADOW_ITEM_ORIGINAL_DATA_KEY]: draggedElData
+        ...draggedElData, 
+        [SHADOW_ITEM_MARKER_PROPERTY_NAME]: true, 
+        [ITEM_ID_KEY]: SHADOW_PLACEHOLDER_ITEM_ID,
+        [DND_PERMANENT_ID_KEY]: draggedElData[ITEM_ID_KEY]
     };
 }
 
