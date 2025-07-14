@@ -23,6 +23,7 @@ export const SHADOW_ELEMENT_ATTRIBUTE_NAME = "data-is-dnd-shadow-item-internal";
 export const SHADOW_ELEMENT_HINT_ATTRIBUTE_NAME = "data-is-dnd-shadow-item-hint";
 export const SHADOW_PLACEHOLDER_ITEM_ID = "id:dnd-shadow-placeholder-0000";
 export const DRAGGED_ELEMENT_ID = "dnd-action-dragged-el";
+export const SHADOW_BACKUP_ID_KEY = "dndShadowBackupId";
 
 export let ITEM_ID_KEY = "id";
 let activeDndZoneCount = 0;
@@ -51,6 +52,20 @@ export function overrideItemIdKeyNameBeforeInitialisingDndZones(newKeyName) {
     }
     printDebug(() => ["overriding item id key name", newKeyName]);
     ITEM_ID_KEY = newKeyName;
+}
+
+/**
+ * Gets the true ID of an item, checking for shadow backup ID first
+ * @param {Object} item - The item to get the ID from
+ * @returns {*} The true ID of the item
+ */
+export function getTrueId(item) {
+    // If the item has a shadow backup ID, that's the true ID
+    if (item[SHADOW_BACKUP_ID_KEY]) {
+        return item[SHADOW_BACKUP_ID_KEY];
+    }
+    // Otherwise return the regular ID
+    return item[ITEM_ID_KEY];
 }
 
 export const isOnServer = typeof window === "undefined";

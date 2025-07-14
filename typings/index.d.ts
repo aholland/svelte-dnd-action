@@ -116,8 +116,14 @@ export type DndEvent<T = Item> = {
 
 export declare const SHADOW_ITEM_MARKER_PROPERTY_NAME: "isDndShadowItem";
 export declare const SHADOW_PLACEHOLDER_ITEM_ID: "id:dnd-shadow-placeholder-0000";
+export declare const SHADOW_BACKUP_ID_KEY: "dndShadowBackupId";
 export declare const DRAGGED_ELEMENT_ID: "dnd-action-dragged-el";
 export declare const SHADOW_ELEMENT_HINT_ATTRIBUTE_NAME = "data-is-dnd-shadow-item-hint";
+
+/**
+ * Gets the true ID of an item, checking for shadow backup ID first
+ */
+export declare function getTrueId(item: Item): any;
 
 /**
  * Allows the user to show/hide console debug output

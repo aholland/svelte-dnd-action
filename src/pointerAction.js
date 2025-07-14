@@ -6,6 +6,7 @@ import {
     SHADOW_ELEMENT_ATTRIBUTE_NAME,
     SHADOW_ITEM_MARKER_PROPERTY_NAME,
     SHADOW_PLACEHOLDER_ITEM_ID,
+    SHADOW_BACKUP_ID_PROPERTY_NAME,
     SOURCES,
     TRIGGERS
 } from "./constants";
@@ -129,7 +130,12 @@ function findShadowElementIdx(items) {
     return items.findIndex(item => !!item[SHADOW_ITEM_MARKER_PROPERTY_NAME]);
 }
 function createShadowElData(draggedElData) {
-    return {...draggedElData, [SHADOW_ITEM_MARKER_PROPERTY_NAME]: true, [ITEM_ID_KEY]: SHADOW_PLACEHOLDER_ITEM_ID};
+    return {
+        ...draggedElData,
+        [SHADOW_ITEM_MARKER_PROPERTY_NAME]: true,
+        [ITEM_ID_KEY]: SHADOW_PLACEHOLDER_ITEM_ID,
+        [SHADOW_BACKUP_ID_PROPERTY_NAME]: draggedElData[ITEM_ID_KEY]
+    };
 }
 
 /* custom drag-events handlers */
@@ -141,8 +147,8 @@ function handleDraggedEntered(e) {
         return;
     }
     isDraggedOutsideOfAnyDz = false;
-    // this deals with another race condition. on some occasions (super rapid operations) the list hasn't updated yet
-    items = items.filter(item => item[ITEM_ID_KEY] !== shadowElData[ITEM_ID_KEY] && item[ITEM_ID_KEY] !== SHADOW_PLACEHOLDER_ITEM_ID);
+    // this deals with another race condition. in rare occasions (super rapid operations) the list hasn't updated yet
+    items = items.filter(item => !item[SHADOW_ITEM_MARKER_PROPERTY_NAME]);
     printDebug(() => `dragged entered items ${toString(items)}`);
 
     if (originDropZone !== e.currentTarget) {
@@ -258,7 +264,13 @@ function handleDrop() {
         }
     }
 
-    items = items.map(item => (item[SHADOW_ITEM_MARKER_PROPERTY_NAME] ? draggedElData : item));
+    items = items.map(item => {
+        if (item[SHADOW_ITEM_MARKER_PROPERTY_NAME]) {
+            // Restore the original data when finalizing
+            return draggedElData;
+        }
+        return item;
+    });
     function finalizeWithinZone() {
         unlockOriginDzMinDimensions();
         dispatchFinalizeEvent(shadowElDropZone, items, {
@@ -500,14 +512,16 @@ export function dndzone(node, options) {
         originDropZoneRoot.appendChild(draggedEl);
         // We will keep the original dom node in the dom because touch events keep firing on it, we want to re-add it after the framework removes it
         function keepOriginalElementInDom() {
+            if (!originalDragTarget) {
+                printDebug(() => "originalDragTarget became undefined, aborting keepOriginalElementInDom");
+                return;
+            }
             if (!originalDragTarget.parentElement) {
                 originalDragTarget.setAttribute(ORIGINAL_DRAGGED_ITEM_MARKER_ATTRIBUTE, true);
                 originDropZoneRoot.appendChild(originalDragTarget);
                 // have to watch before we hide, otherwise Svelte 5 $state gets confused
                 watchDraggedElement();
                 hideElement(originalDragTarget);
-                // after the removal of the original element we can give the shadow element the original item id so that the host zone can find it and render it correctly if it does lookups by id
-                shadowElData[ITEM_ID_KEY] = draggedElData[ITEM_ID_KEY];
                 // to prevent the outline from disappearing
                 draggedEl.focus();
             } else {
