@@ -5,6 +5,7 @@ import {
     printDebug,
     SHADOW_ELEMENT_ATTRIBUTE_NAME,
     SHADOW_ITEM_MARKER_PROPERTY_NAME,
+    SHADOW_ITEM_ORIGINAL_ID_PROPERTY_NAME,
     SOURCES,
     TRIGGERS
 } from "./constants";
@@ -128,7 +129,11 @@ function findShadowElementIdx(items) {
     return items.findIndex(item => !!item[SHADOW_ITEM_MARKER_PROPERTY_NAME]);
 }
 function createShadowElData(draggedElData) {
-    return {...draggedElData, [SHADOW_ITEM_MARKER_PROPERTY_NAME]: true};
+    const shadowElData = {...draggedElData, [SHADOW_ITEM_MARKER_PROPERTY_NAME]: true};
+    // Store original ID and create a unique shadow ID to avoid duplicate key issues
+    shadowElData[SHADOW_ITEM_ORIGINAL_ID_PROPERTY_NAME] = draggedElData[ITEM_ID_KEY];
+    shadowElData[ITEM_ID_KEY] = `shadow-${draggedElData[ITEM_ID_KEY]}-${Date.now()}`;
+    return shadowElData;
 }
 
 /* custom drag-events handlers */
@@ -258,7 +263,13 @@ function handleDrop() {
         }
     }
 
-    items = items.map(item => (item[SHADOW_ITEM_MARKER_PROPERTY_NAME] ? draggedElData : item));
+    items = items.map(item => {
+        if (item[SHADOW_ITEM_MARKER_PROPERTY_NAME]) {
+            // Restore the original data when finalizing
+            return draggedElData;
+        }
+        return item;
+    });
     function finalizeWithinZone() {
         unlockOriginDzMinDimensions();
         dispatchFinalizeEvent(shadowElDropZone, items, {

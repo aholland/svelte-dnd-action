@@ -297,6 +297,7 @@
   var SHADOW_ITEM_MARKER_PROPERTY_NAME = "isDndShadowItem";
   var SHADOW_ELEMENT_ATTRIBUTE_NAME = "data-is-dnd-shadow-item-internal";
   var SHADOW_ELEMENT_HINT_ATTRIBUTE_NAME = "data-is-dnd-shadow-item-hint";
+  var SHADOW_ITEM_ORIGINAL_ID_PROPERTY_NAME = "_dndOriginalId";
   var DRAGGED_ELEMENT_ID = "dnd-action-dragged-el";
   var ITEM_ID_KEY = "id";
   var activeDndZoneCount = 0;
@@ -1448,7 +1449,11 @@
     });
   }
   function createShadowElData(draggedElData) {
-    return _objectSpread2(_objectSpread2({}, draggedElData), {}, _defineProperty({}, SHADOW_ITEM_MARKER_PROPERTY_NAME, true));
+    var shadowElData = _objectSpread2(_objectSpread2({}, draggedElData), {}, _defineProperty({}, SHADOW_ITEM_MARKER_PROPERTY_NAME, true));
+    // Store original ID and create a unique shadow ID to avoid duplicate key issues
+    shadowElData[SHADOW_ITEM_ORIGINAL_ID_PROPERTY_NAME] = draggedElData[ITEM_ID_KEY];
+    shadowElData[ITEM_ID_KEY] = "shadow-".concat(draggedElData[ITEM_ID_KEY], "-").concat(Date.now());
+    return shadowElData;
   }
 
   /* custom drag-events handlers */
@@ -1618,7 +1623,11 @@
       }
     }
     items = items.map(function (item) {
-      return item[SHADOW_ITEM_MARKER_PROPERTY_NAME] ? draggedElData : item;
+      if (item[SHADOW_ITEM_MARKER_PROPERTY_NAME]) {
+        // Restore the original data when finalizing
+        return draggedElData;
+      }
+      return item;
     });
     function finalizeWithinZone() {
       unlockOriginDzMinDimensions();
