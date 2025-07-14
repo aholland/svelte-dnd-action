@@ -5,7 +5,7 @@ import {
     printDebug,
     SHADOW_ELEMENT_ATTRIBUTE_NAME,
     SHADOW_ITEM_MARKER_PROPERTY_NAME,
-    SHADOW_ITEM_INTERNAL_KEY,
+    SHADOW_ITEM_ORIGINAL_DATA_KEY,
     SOURCES,
     TRIGGERS
 } from "./constants";
@@ -129,12 +129,14 @@ function findShadowElementIdx(items) {
     return items.findIndex(item => !!item[SHADOW_ITEM_MARKER_PROPERTY_NAME]);
 }
 function createShadowElData(draggedElData) {
-    // Keep all original properties including ID for proper sorting
-    // Add a unique internal key for framework rendering
+    // Create a shadow item with a unique ID to avoid framework conflicts
+    // Store the original data for consumer access
+    const shadowId = `dnd-shadow-${draggedElData[ITEM_ID_KEY]}-${Date.now()}`;
     return {
-        ...draggedElData, 
+        ...draggedElData,
+        [ITEM_ID_KEY]: shadowId,
         [SHADOW_ITEM_MARKER_PROPERTY_NAME]: true,
-        [SHADOW_ITEM_INTERNAL_KEY]: `${draggedElData[ITEM_ID_KEY]}-shadow-${Date.now()}`
+        [SHADOW_ITEM_ORIGINAL_DATA_KEY]: draggedElData
     };
 }
 
@@ -513,6 +515,10 @@ export function dndzone(node, options) {
         originDropZoneRoot.appendChild(draggedEl);
         // We will keep the original dom node in the dom because touch events keep firing on it, we want to re-add it after the framework removes it
         function keepOriginalElementInDom() {
+            if (!originalDragTarget) {
+                printDebug(() => "originalDragTarget became undefined, aborting keepOriginalElementInDom");
+                return;
+            }
             if (!originalDragTarget.parentElement) {
                 originalDragTarget.setAttribute(ORIGINAL_DRAGGED_ITEM_MARKER_ATTRIBUTE, true);
                 originDropZoneRoot.appendChild(originalDragTarget);

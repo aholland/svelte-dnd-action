@@ -5,7 +5,7 @@ export {
     TRIGGERS,
     SOURCES,
     SHADOW_ITEM_MARKER_PROPERTY_NAME,
-    SHADOW_ITEM_INTERNAL_KEY,
+    SHADOW_ITEM_ORIGINAL_DATA_KEY,
     DRAGGED_ELEMENT_ID,
     overrideItemIdKeyNameBeforeInitialisingDndZones,
     setDebugMode

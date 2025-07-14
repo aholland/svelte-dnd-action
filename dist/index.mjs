@@ -289,7 +289,7 @@ var SOURCES = {
   KEYBOARD: "keyboard"
 };
 var SHADOW_ITEM_MARKER_PROPERTY_NAME = "isDndShadowItem";
-var SHADOW_ITEM_INTERNAL_KEY = "_dndShadowKey";
+var SHADOW_ITEM_ORIGINAL_DATA_KEY = "_dndOriginalData";
 var SHADOW_ELEMENT_ATTRIBUTE_NAME = "data-is-dnd-shadow-item-internal";
 var SHADOW_ELEMENT_HINT_ATTRIBUTE_NAME = "data-is-dnd-shadow-item-hint";
 var DRAGGED_ELEMENT_ID = "dnd-action-dragged-el";
@@ -1443,9 +1443,10 @@ function findShadowElementIdx(items) {
   });
 }
 function createShadowElData(draggedElData) {
-  // Keep all original properties including ID for proper sorting
-  // Add a unique internal key for framework rendering
-  return _objectSpread2(_objectSpread2({}, draggedElData), {}, _defineProperty(_defineProperty({}, SHADOW_ITEM_MARKER_PROPERTY_NAME, true), SHADOW_ITEM_INTERNAL_KEY, "".concat(draggedElData[ITEM_ID_KEY], "-shadow-").concat(Date.now())));
+  // Create a shadow item with a unique ID to avoid framework conflicts
+  // Store the original data for consumer access
+  var shadowId = "dnd-shadow-".concat(draggedElData[ITEM_ID_KEY], "-").concat(Date.now());
+  return _objectSpread2(_objectSpread2({}, draggedElData), {}, _defineProperty(_defineProperty(_defineProperty({}, ITEM_ID_KEY, shadowId), SHADOW_ITEM_MARKER_PROPERTY_NAME, true), SHADOW_ITEM_ORIGINAL_DATA_KEY, draggedElData));
 }
 
 /* custom drag-events handlers */
@@ -1884,6 +1885,12 @@ function dndzone$2(node, options) {
     originDropZoneRoot.appendChild(draggedEl);
     // We will keep the original dom node in the dom because touch events keep firing on it, we want to re-add it after the framework removes it
     function keepOriginalElementInDom() {
+      if (!originalDragTarget) {
+        printDebug(function () {
+          return "originalDragTarget became undefined, aborting keepOriginalElementInDom";
+        });
+        return;
+      }
       if (!originalDragTarget.parentElement) {
         originalDragTarget.setAttribute(ORIGINAL_DRAGGED_ITEM_MARKER_ATTRIBUTE, true);
         originDropZoneRoot.appendChild(originalDragTarget);
@@ -2821,4 +2828,4 @@ function dragHandle(handle) {
   };
 }
 
-export { DRAGGED_ELEMENT_ID, FEATURE_FLAG_NAMES, SHADOW_ITEM_INTERNAL_KEY, SHADOW_ITEM_MARKER_PROPERTY_NAME, SOURCES, TRIGGERS, alertToScreenReader, dndzone, dragHandle, dragHandleZone, overrideItemIdKeyNameBeforeInitialisingDndZones, setDebugMode, setFeatureFlag };
+export { DRAGGED_ELEMENT_ID, FEATURE_FLAG_NAMES, SHADOW_ITEM_MARKER_PROPERTY_NAME, SHADOW_ITEM_ORIGINAL_DATA_KEY, SOURCES, TRIGGERS, alertToScreenReader, dndzone, dragHandle, dragHandleZone, overrideItemIdKeyNameBeforeInitialisingDndZones, setDebugMode, setFeatureFlag };
