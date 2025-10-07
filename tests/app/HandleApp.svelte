@@ -25,8 +25,8 @@
 
     <section
         use:dragHandleZone={{items, flipDurationMs: 200}}
-        on:consider={handleConsider}
-        on:finalize={handleFinalize}
+        onconsider={handleConsider}
+        onfinalize={handleFinalize}
         class="dnd-list"
         data-testid="handle-zone"
     >

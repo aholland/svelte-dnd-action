@@ -1,6 +1,7 @@
+import {mount} from "svelte";
 import HandleApp from "./HandleApp.svelte";
 
-const app = new HandleApp({
+const app = mount(HandleApp, {
     target: document.getElementById("app")
 });
 

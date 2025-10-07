@@ -24,8 +24,8 @@
 
     <section
         use:dndzone={{items, flipDurationMs: 200}}
-        on:consider={handleConsider}
-        on:finalize={handleFinalize}
+        onconsider={handleConsider}
+        onfinalize={handleFinalize}
         class="dnd-list"
         data-testid="dnd-zone"
     >
