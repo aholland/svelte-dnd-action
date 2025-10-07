@@ -1,0 +1,106 @@
+<script>
+    import {dndzone} from "../../src/index.js";
+    import {flip} from "svelte/animate";
+
+    let items = [
+        {id: 1, name: "Item 1"},
+        {id: 2, name: "Item 2"},
+        {id: 3, name: "Item 3"},
+        {id: 4, name: "Item 4"},
+        {id: 5, name: "Item 5"}
+    ];
+
+    function handleConsider(e) {
+        items = e.detail.items;
+    }
+
+    function handleFinalize(e) {
+        items = e.detail.items;
+    }
+</script>
+
+<div class="container">
+    <h1>Drag and Drop Test</h1>
+
+    <section
+        use:dndzone={{items, flipDurationMs: 200}}
+        on:consider={handleConsider}
+        on:finalize={handleFinalize}
+        class="dnd-list"
+        data-testid="dnd-zone"
+    >
+        {#each items as item (item.id)}
+            <div class="item" animate:flip={{duration: 200}} data-testid="item-{item.id}">
+                <span class="drag-handle" data-testid="handle-{item.id}">☰</span>
+                <span>{item.name}</span>
+            </div>
+        {/each}
+    </section>
+
+    <div class="order-display" data-testid="order-display">
+        Current order: {items.map(i => i.id).join(", ")}
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .dnd-list {
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px;
+        min-height: 300px;
+        background: #f9f9f9;
+    }
+
+    .item {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 15px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: grab;
+        user-select: none;
+        transition: box-shadow 0.2s;
+    }
+
+    .item:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .item:active {
+        cursor: grabbing;
+    }
+
+    .drag-handle {
+        font-size: 20px;
+        color: #999;
+        cursor: grab;
+    }
+
+    .drag-handle:active {
+        cursor: grabbing;
+    }
+
+    .order-display {
+        margin-top: 20px;
+        padding: 15px;
+        background: #e3f2fd;
+        border-radius: 4px;
+        text-align: center;
+        font-weight: 500;
+    }
+</style>
