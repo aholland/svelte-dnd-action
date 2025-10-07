@@ -2,7 +2,7 @@ import {test, expect} from "@playwright/test";
 
 test.describe("Drag Handles", () => {
     test.beforeEach(async ({page}) => {
-        await page.goto("/index-handle.html");
+        await page.goto("/handle-drag.html");
     });
 
     test("should display the initial list with handles", async ({page}) => {

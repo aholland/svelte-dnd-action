@@ -2,7 +2,7 @@ import {test, expect} from "@playwright/test";
 
 test.describe("Drag and Drop", () => {
     test.beforeEach(async ({page}) => {
-        await page.goto("/");
+        await page.goto("/basic-drag.html");
     });
 
     test("should display the initial list", async ({page}) => {

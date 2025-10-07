@@ -3,10 +3,176 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Drag and Drop Test</title>
+        <title>Drag and Drop Test Demos</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: system-ui, -apple-system, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            }
+
+            .container {
+                max-width: 800px;
+                width: 100%;
+            }
+
+            h1 {
+                color: white;
+                text-align: center;
+                margin-bottom: 20px;
+                font-size: 2.5rem;
+                text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            }
+
+            .subtitle {
+                color: rgba(255, 255, 255, 0.9);
+                text-align: center;
+                margin-bottom: 50px;
+                font-size: 1.1rem;
+            }
+
+            .demos {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 30px;
+            }
+
+            .demo-card {
+                background: white;
+                border-radius: 12px;
+                padding: 30px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                transition: transform 0.2s, box-shadow 0.2s;
+                text-decoration: none;
+                color: inherit;
+                display: block;
+            }
+
+            .demo-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            }
+
+            .demo-icon {
+                font-size: 3rem;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+            .demo-title {
+                font-size: 1.5rem;
+                font-weight: 600;
+                margin-bottom: 10px;
+                color: #333;
+            }
+
+            .demo-description {
+                color: #666;
+                line-height: 1.6;
+                margin-bottom: 20px;
+            }
+
+            .demo-features {
+                list-style: none;
+                margin-top: 15px;
+            }
+
+            .demo-features li {
+                padding: 5px 0;
+                color: #555;
+                font-size: 0.9rem;
+            }
+
+            .demo-features li:before {
+                content: "✓ ";
+                color: #667eea;
+                font-weight: bold;
+                margin-right: 5px;
+            }
+
+            .demo-link {
+                display: inline-block;
+                margin-top: 15px;
+                padding: 10px 20px;
+                background: #667eea;
+                color: white;
+                border-radius: 6px;
+                text-decoration: none;
+                font-weight: 500;
+                transition: background 0.2s;
+            }
+
+            .demo-link:hover {
+                background: #5568d3;
+            }
+
+            .footer {
+                text-align: center;
+                color: rgba(255, 255, 255, 0.8);
+                margin-top: 50px;
+                font-size: 0.9rem;
+            }
+
+            .footer a {
+                color: white;
+                text-decoration: underline;
+            }
+        </style>
     </head>
     <body>
-        <div id="app"></div>
-        <script type="module" src="/main.js"></script>
+        <div class="container">
+            <h1>🎯 Drag & Drop Test Demos</h1>
+            <p class="subtitle">Interactive test applications for svelte-dnd-action</p>
+
+            <div class="demos">
+                <a href="/basic-drag.html" class="demo-card">
+                    <div class="demo-icon">🖱️</div>
+                    <h2 class="demo-title">Basic Drag & Drop</h2>
+                    <p class="demo-description">
+                        Full drag and drop functionality where entire items are draggable.
+                    </p>
+                    <ul class="demo-features">
+                        <li>Drag any item by clicking anywhere</li>
+                        <li>Smooth animations with flip</li>
+                        <li>Visual feedback during drag</li>
+                        <li>Simple dndzone action</li>
+                    </ul>
+                    <span class="demo-link">Launch Demo →</span>
+                </a>
+
+                <a href="/handle-drag.html" class="demo-card">
+                    <div class="demo-icon">☰</div>
+                    <h2 class="demo-title">Drag Handles</h2>
+                    <p class="demo-description">
+                        Restricted dragging where only specific handle areas can initiate drag operations.
+                    </p>
+                    <ul class="demo-features">
+                        <li>Drag only via handle icon (☰)</li>
+                        <li>Non-handle areas don't drag</li>
+                        <li>Better UX for complex items</li>
+                        <li>Uses dragHandleZone action</li>
+                    </ul>
+                    <span class="demo-link">Launch Demo →</span>
+                </a>
+            </div>
+
+            <div class="footer">
+                <p>
+                    Run Playwright tests with: <code style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 3px;">pnpm test:e2e</code>
+                    <br />
+                    Interactive test UI: <code style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 3px;">pnpm test:e2e:ui</code>
+                </p>
+            </div>
+        </div>
     </body>
 </html>
