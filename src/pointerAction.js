@@ -35,6 +35,7 @@ import {
 } from "./helpers/dispatcher";
 import {areArraysShallowEqualSameOrder, areObjectsShallowEqual, toString} from "./helpers/util";
 import {getBoundingRectNoTransforms} from "./helpers/intersection";
+import {resetIndexesCache} from "./helpers/listUtil";
 
 const DEFAULT_DROP_ZONE_TYPE = "--any--";
 const MIN_OBSERVATION_INTERVAL_MS = 100;
@@ -493,6 +494,10 @@ export function dndzone(node, options) {
     function handleDragStart() {
         printDebug(() => [`drag start config: ${toString(config)}`, originalDragTarget]);
         isWorkingOnPreviousDrag = true;
+
+        // Reset cached element positions to ensure fresh measurements
+        // This fixes issues when elements have changed size since the last drag (e.g., collapsed panels)
+        resetIndexesCache();
 
         // initialising globals
         const currentIdx = elToIdx.get(originalDragTarget);
