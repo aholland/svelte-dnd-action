@@ -13,7 +13,7 @@ function V(e, t, n) {
     })
   );
 }
-const Oe = "draggedEntered", fe = "draggedLeft", Ae = "draggedOverIndex", Ge = "draggedLeftDocument", Ee = {
+const Oe = "draggedEntered", fe = "draggedLeft", Ae = "draggedOverIndex", Be = "draggedLeftDocument", Ee = {
   LEFT_FOR_ANOTHER: "leftForAnother",
   OUTSIDE_OF_ANY: "outsideOfAny"
 };
@@ -47,7 +47,7 @@ function Rt(e, t, n) {
 }
 function St(e) {
   window.dispatchEvent(
-    new CustomEvent(Ge, {
+    new CustomEvent(Be, {
       detail: { draggedEl: e }
     })
   );
@@ -66,7 +66,7 @@ const x = {
 }, R = {
   POINTER: "pointer",
   KEYBOARD: "keyboard"
-}, le = "isDndShadowItem", _e = "data-is-dnd-shadow-item-internal", Nt = "data-is-dnd-shadow-item-hint", Lt = "id:dnd-shadow-placeholder-0000", Ct = "dnd-action-dragged-el", Ce = "dndShadowBackupId";
+}, le = "isDndShadowItem", _e = "data-is-dnd-shadow-item-internal", Nt = "data-is-dnd-shadow-item-hint", Lt = "id:dnd-shadow-placeholder-0000", Ct = "dnd-action-dragged-el", Me = "dndShadowBackupId";
 let O = "id", De = 0;
 function rt() {
   De++;
@@ -84,9 +84,9 @@ function xn(e) {
   u(() => ["overriding item id key name", e]), O = e;
 }
 function Rn(e) {
-  return e[Ce] ? e[Ce] : e[O];
+  return e[Me] ? e[Me] : e[O];
 }
-const Be = typeof window > "u";
+const Ze = typeof window > "u";
 let u = () => {
 };
 function Sn(e) {
@@ -96,7 +96,7 @@ function Sn(e) {
   } : u = () => {
   };
 }
-function Me(e, t = !0) {
+function Pe(e, t = !0) {
   let n;
   const r = t ? $t(e) : e.getBoundingClientRect(), i = getComputedStyle(e), o = i.transform;
   if (o) {
@@ -122,7 +122,7 @@ function Me(e, t = !0) {
     return r;
 }
 function ot(e) {
-  const t = Me(e);
+  const t = Pe(e);
   return {
     top: t.top + window.scrollY,
     bottom: t.bottom + window.scrollY,
@@ -188,10 +188,10 @@ function $t(e) {
   };
 }
 let J;
-function Ze() {
+function xe() {
   u(() => "resetting indexes cache"), J = /* @__PURE__ */ new Map();
 }
-Ze();
+xe();
 function kt(e) {
   const t = Array.from(e.children).findIndex((n) => n.getAttribute(_e));
   if (t >= 0)
@@ -244,14 +244,14 @@ function Bt(e, t) {
   return !0;
 }
 const Zt = 200, Ye = 10;
-let Pe;
+let Fe;
 function Ut(e, t, n = Zt, r) {
   let i, o, a = !1, s;
   const c = Array.from(t).sort((l, m) => ye(m) - ye(l));
   function g() {
     const l = ce(e), m = r.multiScrollIfNeeded();
     if (!m && s && Math.abs(s.x - l.x) < Ye && Math.abs(s.y - l.y) < Ye) {
-      Pe = window.setTimeout(g, n);
+      Fe = window.setTimeout(g, n);
       return;
     }
     if (Ft(e)) {
@@ -261,7 +261,7 @@ function Ut(e, t, n = Zt, r) {
     s = l;
     let d = !1;
     for (const f of c) {
-      m && Ze();
+      m && xe();
       const h = zt(e, f);
       if (h === null)
         continue;
@@ -269,12 +269,12 @@ function Ut(e, t, n = Zt, r) {
       d = !0, f !== i ? (i && It(i, e, f), _t(f, h, e), i = f) : L !== o && (Rt(f, h, e), o = L);
       break;
     }
-    !d && a && i ? (xt(i, e), i = void 0, o = void 0, a = !1) : a = !0, Pe = window.setTimeout(g, n);
+    !d && a && i ? (xt(i, e), i = void 0, o = void 0, a = !1) : a = !0, Fe = window.setTimeout(g, n);
   }
   g();
 }
 function Ht() {
-  u(() => "unobserving"), clearTimeout(Pe), Ze();
+  u(() => "unobserving"), clearTimeout(Fe), xe();
 }
 const oe = 30;
 function Wt() {
@@ -470,8 +470,8 @@ function on(e) {
 const sn = "--any--", an = 100, dn = 20, me = 3, ln = 80, Ve = {
   outline: "rgba(255, 255, 102, 0.7) solid 2px"
 }, je = "data-is-dnd-original-dragged-item";
-let A, T, M, xe, p, Re, ne, w, Z, _, W = !1, Ue = !1, He, ge = !1, se = [], de, U, ae = !1;
-const G = /* @__PURE__ */ new Map(), D = /* @__PURE__ */ new Map(), Le = /* @__PURE__ */ new WeakMap();
+let A, T, M, Re, p, Se, ne, w, Z, _, W = !1, Ue = !1, He, ge = !1, se = [], de, U, ae = !1;
+const G = /* @__PURE__ */ new Map(), D = /* @__PURE__ */ new Map(), Ce = /* @__PURE__ */ new WeakMap();
 function cn(e, t) {
   u(() => "registering drop-zone if absent"), G.has(t) || G.set(t, /* @__PURE__ */ new Set()), G.get(t).has(e) || (G.get(t).add(e), rt());
 }
@@ -480,21 +480,21 @@ function Xe(e, t) {
 }
 function un() {
   u(() => "watching dragged element");
-  const e = G.get(xe);
+  const e = G.get(Re);
   for (const r of e)
     r.addEventListener(Oe, gt), r.addEventListener(fe, ht), r.addEventListener(Ae, mt);
-  window.addEventListener(Ge, re);
+  window.addEventListener(Be, re);
   const t = Math.max(...Array.from(e.keys()).map((r) => D.get(r).dropAnimationDurationMs)), n = t === 0 ? dn : Math.max(t, an);
   de = Vt(e, () => _), Ut(T, e, n * 1.07, de);
 }
 function fn() {
   u(() => "unwatching dragged element");
-  const e = G.get(xe);
+  const e = G.get(Re);
   for (const t of e)
     t.removeEventListener(Oe, gt), t.removeEventListener(fe, ht), t.removeEventListener(Ae, mt);
-  window.removeEventListener(Ge, re), de && (de.destroy(), de = void 0), Ht();
+  window.removeEventListener(Be, re), de && (de.destroy(), de = void 0), Ht();
 }
-function Se(e) {
+function Ne(e) {
   return e.findIndex((t) => !!t[le]);
 }
 function gn(e) {
@@ -502,7 +502,7 @@ function gn(e) {
     ...e,
     [le]: !0,
     [O]: Lt,
-    [Ce]: e[O]
+    [Me]: e[O]
   };
 }
 function gt(e) {
@@ -531,7 +531,7 @@ function ht(e) {
     u(() => "drop is currently disabled");
     return;
   }
-  const r = [...t], i = Se(r);
+  const r = [...t], i = Ne(r);
   i !== -1 && r.splice(i, 1);
   const o = w;
   w = void 0;
@@ -539,7 +539,7 @@ function ht(e) {
   if (a === Ee.OUTSIDE_OF_ANY || a === Ee.LEFT_FOR_ANOTHER && s !== p && D.get(s).dropFromOthersDisabled) {
     u(() => "dragged left all, putting shadow element back in the origin dz"), ge = !0, w = p;
     const c = o === p ? r : [...D.get(p).items];
-    c.splice(Re, 0, ne), V(p, c, {
+    c.splice(Se, 0, ne), V(p, c, {
       trigger: x.DRAGGED_LEFT_ALL,
       id: M[O],
       source: R.POINTER
@@ -560,7 +560,7 @@ function mt(e) {
   }
   const r = [...t];
   ge = !1;
-  const { index: i } = e.detail.indexObj, o = Se(r);
+  const { index: i } = e.detail.indexObj, o = Ne(r);
   o !== -1 && r.splice(o, 1), r.splice(i, 0, ne), V(e.currentTarget, r, { trigger: x.DRAGGED_OVER_INDEX, id: M[O], source: R.POINTER });
 }
 function Te(e) {
@@ -576,8 +576,8 @@ function re() {
     (i) => D.get(i).dropTargetStyle,
     (i) => D.get(i).dropTargetClasses
   );
-  let n = Se(e);
-  n === -1 && w === p && (n = Re), e = e.map((i) => i[le] ? M : i);
+  let n = Ne(e);
+  n === -1 && w === p && (n = Se), e = e.map((i) => i[le] ? M : i);
   function r() {
     He(), te(w, e, {
       trigger: ge ? x.DROPPED_OUTSIDE_OF_ANY : x.DROPPED_INTO_ZONE,
@@ -594,7 +594,7 @@ function re() {
   D.get(w).dropAnimationDisabled ? r() : hn(n, r);
 }
 function hn(e, t) {
-  const n = e > -1 ? Me(w.children[e], !1) : Me(w, !1), r = {
+  const n = e > -1 ? Pe(w.children[e], !1) : Pe(w, !1), r = {
     x: n.left - parseFloat(T.style.left),
     y: n.top - parseFloat(T.style.top)
   }, { dropAnimationDurationMs: i } = D.get(w), o = `transform ${i}ms ease`;
@@ -606,7 +606,7 @@ function mn(e, t) {
   });
 }
 function pn() {
-  T && T.remove && T.remove(), A && A.remove && A.remove(), T = void 0, A = void 0, M = void 0, xe = void 0, p = void 0, Re = void 0, ne = void 0, w = void 0, Z = void 0, _ = void 0, W = !1, Ue = !1, He = void 0, ge = !1, U && clearTimeout(U), U = void 0, ae = !1, se.length && (u(() => ["will destroy zones that were removed during drag", se]), se.forEach(({ dz: e, destroy: t }) => {
+  T && T.remove && T.remove(), A && A.remove && A.remove(), T = void 0, A = void 0, M = void 0, Re = void 0, p = void 0, Se = void 0, ne = void 0, w = void 0, Z = void 0, _ = void 0, W = !1, Ue = !1, He = void 0, ge = !1, U && clearTimeout(U), U = void 0, ae = !1, se.length && (u(() => ["will destroy zones that were removed during drag", se]), se.forEach(({ dz: e, destroy: t }) => {
     t(), e.remove();
   }), se = []);
 }
@@ -673,11 +673,11 @@ function En(e, t) {
     }, r.delayTouchStartMs)), o();
   }
   function l() {
-    u(() => [`drag start config: ${k(r)}`, A]), W = !0;
+    u(() => [`drag start config: ${k(r)}`, A]), W = !0, xe();
     const d = i.get(A);
-    Re = d, p = A.parentElement;
+    Se = d, p = A.parentElement;
     const f = p.closest("dialog") || p.closest("[popover]") || p.getRootNode(), h = f.body || f, { items: L, type: H, centreDraggedOnCursor: B } = r, S = [...L];
-    M = S[d], xe = H, ne = gn(M), T = Jt(A, B && _), h.appendChild(T);
+    M = S[d], Re = H, ne = gn(M), T = Jt(A, B && _), h.appendChild(T);
     function N() {
       if (!A) {
         u(() => "originalDragTarget became undefined, aborting keepOriginalElementInDom");
@@ -707,8 +707,8 @@ function En(e, t) {
     delayTouchStart: ie = !1
   }) {
     r.dropAnimationDurationMs = f;
-    let Ne = 0;
-    ie === !0 ? Ne = ln : typeof ie == "number" && isFinite(ie) && ie >= 0 && (Ne = ie), r.delayTouchStartMs = Ne, r.type && h !== r.type && Xe(e, r.type), r.type = h, r.items = [...d], r.dragDisabled = L, r.morphDisabled = H, r.transformDraggedElement = E, r.centreDraggedOnCursor = Tt, r.dropAnimationDisabled = bt, n && W && !Ue && (!Gt(S, r.dropTargetStyle) || !Bt(N, r.dropTargetClasses)) && (we(
+    let Le = 0;
+    ie === !0 ? Le = ln : typeof ie == "number" && isFinite(ie) && ie >= 0 && (Le = ie), r.delayTouchStartMs = Le, r.type && h !== r.type && Xe(e, r.type), r.type = h, r.items = [...d], r.dragDisabled = L, r.morphDisabled = H, r.transformDraggedElement = E, r.centreDraggedOnCursor = Tt, r.dropAnimationDisabled = bt, n && W && !Ue && (!Gt(S, r.dropTargetStyle) || !Bt(N, r.dropTargetClasses)) && (we(
       [e],
       () => r.dropTargetStyle,
       () => N
@@ -729,14 +729,14 @@ function En(e, t) {
       (b) => he(b, "dropTargetStyle"),
       (b) => he(b, "dropTargetClasses")
     )), r.dropFromOthersDisabled = B, D.set(e, r), cn(e, h);
-    const vt = W ? Se(r.items) : -1;
+    const vt = W ? Ne(r.items) : -1;
     for (let b = 0; b < e.children.length; b++) {
       const C = e.children[b];
       if (tn(C, L), b === vt) {
         H || en(T, C, _.x, _.y), r.transformDraggedElement(T, M, b), nn(C);
         continue;
       }
-      C.removeEventListener("mousedown", Le.get(C)), C.removeEventListener("touchstart", Le.get(C)), L || (C.addEventListener("mousedown", g), C.addEventListener("touchstart", g), Le.set(C, g)), i.set(C, b), n || (n = !0);
+      C.removeEventListener("mousedown", Ce.get(C)), C.removeEventListener("touchstart", Ce.get(C)), L || (C.addEventListener("mousedown", g), C.addEventListener("touchstart", g), Ce.set(C, g)), i.set(C, b), n || (n = !0);
     }
   }
   return m(t), {
@@ -751,40 +751,40 @@ function En(e, t) {
     }
   };
 }
-const Fe = {
+const $e = {
   DND_ZONE_ACTIVE: "dnd-zone-active",
   DND_ZONE_DRAG_DISABLED: "dnd-zone-drag-disabled"
 }, pt = {
-  [Fe.DND_ZONE_ACTIVE]: "Tab to one the items and press space-bar or enter to start dragging it",
-  [Fe.DND_ZONE_DRAG_DISABLED]: "This is a disabled drag and drop list"
+  [$e.DND_ZONE_ACTIVE]: "Tab to one the items and press space-bar or enter to start dragging it",
+  [$e.DND_ZONE_DRAG_DISABLED]: "This is a disabled drag and drop list"
 }, Dn = "dnd-action-aria-alert";
 let y;
-function $e() {
-  y || (y = document.createElement("div"), function() {
+function ke() {
+  y || (y = document.createElement("div"), (function() {
     y.id = Dn, y.style.position = "fixed", y.style.bottom = "0", y.style.left = "0", y.style.zIndex = "-5", y.style.opacity = "0", y.style.height = "0", y.style.width = "0", y.setAttribute("role", "alert");
-  }(), document.body.prepend(y), Object.entries(pt).forEach(([e, t]) => document.body.prepend(Tn(e, t))));
+  })(), document.body.prepend(y), Object.entries(pt).forEach(([e, t]) => document.body.prepend(Tn(e, t))));
 }
 function yn() {
-  return Be ? null : (document.readyState === "complete" ? $e() : window.addEventListener("DOMContentLoaded", $e), { ...Fe });
+  return Ze ? null : (document.readyState === "complete" ? ke() : window.addEventListener("DOMContentLoaded", ke), { ...$e });
 }
 function wn() {
-  Be || !y || (Object.keys(pt).forEach((e) => document.getElementById(e)?.remove()), y.remove(), y = void 0);
+  Ze || !y || (Object.keys(pt).forEach((e) => document.getElementById(e)?.remove()), y.remove(), y = void 0);
 }
 function Tn(e, t) {
   const n = document.createElement("div");
   return n.id = e, n.innerHTML = `<p>${t}</p>`, n.style.display = "none", n.style.position = "fixed", n.style.zIndex = "-5", n;
 }
 function Q(e) {
-  if (Be) return;
-  y || $e(), y.innerHTML = "";
+  if (Ze) return;
+  y || ke(), y.innerHTML = "";
   const t = document.createTextNode(e);
   y.appendChild(t), y.style.display = "none", y.style.display = "inline";
 }
 const bn = "--any--", Ke = {
   outline: "rgba(255, 255, 102, 0.7) solid 2px"
 };
-let P = !1, ke, I, K = "", X, F, Y = "";
-const be = /* @__PURE__ */ new WeakSet(), qe = /* @__PURE__ */ new WeakMap(), Je = /* @__PURE__ */ new WeakMap(), ze = /* @__PURE__ */ new Map(), v = /* @__PURE__ */ new Map(), z = /* @__PURE__ */ new Map();
+let P = !1, ze, I, K = "", X, F, Y = "";
+const be = /* @__PURE__ */ new WeakSet(), qe = /* @__PURE__ */ new WeakMap(), Je = /* @__PURE__ */ new WeakMap(), Ge = /* @__PURE__ */ new Map(), v = /* @__PURE__ */ new Map(), z = /* @__PURE__ */ new Map();
 let ve;
 function vn(e, t) {
   u(() => "registering drop-zone if absent"), z.size === 0 && (u(() => "adding global keydown and click handlers"), ve = yn(), window.addEventListener("keydown", Et), window.addEventListener("click", Dt)), z.has(t) || z.set(t, /* @__PURE__ */ new Set()), z.get(t).has(e) || (z.get(t).add(e), rt());
@@ -813,7 +813,7 @@ function On(e) {
   t.getBoundingClientRect().top < I.getBoundingClientRect().top || t.getBoundingClientRect().left < I.getBoundingClientRect().left ? (a.push(o), s || Q(`Moved item ${Y} to the end of the list ${K}`)) : (a.unshift(o), s || Q(`Moved item ${Y} to the beginning of the list ${K}`)), te(I, n, { trigger: x.DROPPED_INTO_ANOTHER, id: F, source: R.KEYBOARD }), te(t, a, { trigger: x.DROPPED_INTO_ZONE, id: F, source: R.KEYBOARD }), I = t;
 }
 function yt() {
-  ze.forEach(({ update: e }, t) => e(v.get(t)));
+  Ge.forEach(({ update: e }, t) => e(v.get(t)));
 }
 function ue(e = !0) {
   u(() => "drop"), v.get(I).autoAriaDisabled || Q(`Stopped dragging item ${Y}`), be.has(document.activeElement) && document.activeElement.blur(), e && V(I, v.get(I).items, {
@@ -821,10 +821,10 @@ function ue(e = !0) {
     id: F,
     source: R.KEYBOARD
   }), we(
-    z.get(ke),
+    z.get(ze),
     (t) => v.get(t).dropTargetStyle,
     (t) => v.get(t).dropTargetClasses
-  ), X = null, F = null, Y = "", ke = null, I = null, K = "", P = !1, yt();
+  ), X = null, F = null, Y = "", ze = null, I = null, K = "", P = !1, yt();
 }
 function An(e, t) {
   const n = {
@@ -869,7 +869,7 @@ function An(e, t) {
     }
   }
   function o(l) {
-    u(() => "drag start"), s(l.currentTarget), I = e, ke = n.type, P = !0;
+    u(() => "drag start"), s(l.currentTarget), I = e, ze = n.type, P = !0;
     const m = Array.from(z.get(n.type)).filter((d) => d === I || !v.get(d).dropFromOthersDisabled);
     if (pe(
       m,
@@ -911,10 +911,10 @@ function An(e, t) {
       u(() => `keyboard dndzone will update newOptions: ${k(l)}`), c(l);
     },
     destroy: () => {
-      u(() => "keyboard dndzone will destroy"), Qe(e, n.type), v.delete(e), ze.delete(e);
+      u(() => "keyboard dndzone will destroy"), Qe(e, n.type), v.delete(e), Ge.delete(e);
     }
   };
-  return ze.set(e, g), g;
+  return Ge.set(e, g), g;
 }
 function _n(e, t) {
   if (In(e))
@@ -979,9 +979,9 @@ function et(e) {
   }
 }
 function tt(e) {
-  return !isNaN(e) && function(t) {
+  return !isNaN(e) && (function(t) {
     return (t | 0) === t;
-  }(parseFloat(e));
+  })(parseFloat(e));
 }
 function wt(e) {
   let t = e;
@@ -1067,7 +1067,7 @@ function Cn(e) {
 export {
   Ct as DRAGGED_ELEMENT_ID,
   q as FEATURE_FLAG_NAMES,
-  Ce as SHADOW_BACKUP_ID_PROPERTY_NAME,
+  Me as SHADOW_BACKUP_ID_PROPERTY_NAME,
   le as SHADOW_ITEM_MARKER_PROPERTY_NAME,
   Lt as SHADOW_PLACEHOLDER_ITEM_ID,
   R as SOURCES,
