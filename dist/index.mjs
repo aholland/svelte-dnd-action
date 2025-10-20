@@ -760,9 +760,9 @@ const $e = {
 }, Dn = "dnd-action-aria-alert";
 let y;
 function ke() {
-  y || (y = document.createElement("div"), (function() {
+  y || (y = document.createElement("div"), function() {
     y.id = Dn, y.style.position = "fixed", y.style.bottom = "0", y.style.left = "0", y.style.zIndex = "-5", y.style.opacity = "0", y.style.height = "0", y.style.width = "0", y.setAttribute("role", "alert");
-  })(), document.body.prepend(y), Object.entries(pt).forEach(([e, t]) => document.body.prepend(Tn(e, t))));
+  }(), document.body.prepend(y), Object.entries(pt).forEach(([e, t]) => document.body.prepend(Tn(e, t))));
 }
 function yn() {
   return Ze ? null : (document.readyState === "complete" ? ke() : window.addEventListener("DOMContentLoaded", ke), { ...$e });
@@ -959,7 +959,7 @@ function et(e) {
   } = e;
   if (Object.keys(H).length > 0 && console.warn("dndzone will ignore unknown options", H), !t)
     throw new Error("no 'items' key provided to dndzone");
-  const B = t.find((S) => !{}.hasOwnProperty.call(S, O));
+  const B = t.find((S) => !(O in S));
   if (B)
     throw new Error(`missing '${O}' property for item ${k(B)}`);
   if (l && !Array.isArray(l))
@@ -979,9 +979,9 @@ function et(e) {
   }
 }
 function tt(e) {
-  return !isNaN(e) && (function(t) {
+  return !isNaN(e) && function(t) {
     return (t | 0) === t;
-  })(parseFloat(e));
+  }(parseFloat(e));
 }
 function wt(e) {
   let t = e;

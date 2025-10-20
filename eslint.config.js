@@ -11,6 +11,8 @@ export default [
             'dist/**',
             'cypress/**',
             'scripts/**',
+            'tests/**',
+            'playwright-report/**',
             '*.config.js',
             '*.json',
             '*.md',
