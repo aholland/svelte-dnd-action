@@ -64,12 +64,35 @@ The library uses a modular architecture with three main interaction handlers:
 - `--any--` is the default type allowing all items
 - Type matching controls cross-zone transfers
 
+## Versioning and Release Process
+
+This fork uses a custom versioning scheme with `-aholland` suffix:
+
+**Version Format:** `MAJOR.MINOR.PATCH-aholland`
+
+**Release Steps:**
+1. Make code changes
+2. Run `pnpm build` to generate dist/
+3. Bump version in `package.json` (e.g., `0.9.75-aholland` → `0.9.76-aholland`)
+4. Commit changes: `git add -A && git commit -m "feat: description"`
+5. Create git tag: `git tag v0.9.76-aholland`
+6. Push with tags: `git push && git push --tags`
+
+**Version Guidelines:**
+- Patch bump (0.9.X): Bug fixes, minor improvements
+- Minor bump (0.X.0): New features, backward-compatible changes
+- Major bump (X.0.0): Breaking changes
+
+**Consuming in Projects:**
+Reference in package.json as: `"svelte-dnd-action": "github:aholland/svelte-dnd-action#v0.9.76-aholland"`
+
 ## Current Development Context
 
 The library is being forked and migrated from yarn to pnpm. Recent work includes:
 - Converting build system to pnpm
 - Including dist/ in repository for GitHub package references
 - Fixing shadow item sorting issues where shadow elements appeared in wrong positions
+- Adding generic ID type support (v0.9.76-aholland) - allows number IDs instead of only strings
 
 ## Testing Approach
 

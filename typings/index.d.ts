@@ -6,13 +6,13 @@ import type {ActionReturn} from "svelte/action";
  * Dispatches two events that the container is expected to react to by modifying its list of items,
  * which will then feed back in to this action via the update function
  */
-export declare function dndzone<T extends Item>(node: HTMLElement, options: Options<T>): ActionReturn<Options<T>, DndZoneAttributes<T>>;
+export declare function dndzone<T extends Item, TId = string>(node: HTMLElement, options: Options<T, TId>): ActionReturn<Options<T, TId>, DndZoneAttributes<T, TId>>;
 
-export declare function dndzone<T extends Item>(
+export declare function dndzone<T extends Item, TId = string>(
     node: HTMLElement,
-    options: Options<T>
+    options: Options<T, TId>
 ): {
-    update: (newOptions: Options<T>) => void;
+    update: (newOptions: Options<T, TId>) => void;
     destroy: () => void;
 };
 
@@ -20,12 +20,12 @@ export declare function dndzone<T extends Item>(
  * A wrapper action to make it easy to work with drag handles.
  * When using this you must also use the 'dragHandle' action on an element inside each item within the zone.
  */
-export declare function dragHandleZone<T extends Item>(node: HTMLElement, options: Options<T>): ActionReturn<Options<T>, DndZoneAttributes<T>>;
-export declare function dragHandleZone<T extends Item>(
+export declare function dragHandleZone<T extends Item, TId = string>(node: HTMLElement, options: Options<T, TId>): ActionReturn<Options<T, TId>, DndZoneAttributes<T, TId>>;
+export declare function dragHandleZone<T extends Item, TId = string>(
     node: HTMLElement,
-    options: Options<T>
+    options: Options<T, TId>
 ): {
-    update: (newOptions: Options<T>) => void;
+    update: (newOptions: Options<T, TId>) => void;
     destroy: () => void;
 };
 
@@ -44,7 +44,7 @@ export type TransformDraggedElementFunction = (
 ) => void;
 
 export declare type Item = Record<string, any>;
-export interface Options<T extends Item = Item> {
+export interface Options<T extends Item = Item, TId = string> {
     items: T[]; // the list of items that was used to generate the children of the given node
     type?: string; // the type of the dnd zone. children dragged from here can only be dropped in other zones of the same type, defaults to a base type
     flipDurationMs?: number; // if the list animated using flip (recommended), specifies the flip duration such that everything syncs with it without conflict
@@ -66,11 +66,11 @@ export interface Options<T extends Item = Item> {
     delayTouchStart?: boolean | number;
 }
 
-export interface DndZoneAttributes<T> {
-    "on:consider"?: (e: CustomEvent<DndEvent<T>>) => void;
-    "on:finalize"?: (e: CustomEvent<DndEvent<T>>) => void;
-    onconsider?: (e: CustomEvent<DndEvent<T>>) => void;
-    onfinalize?: (e: CustomEvent<DndEvent<T>>) => void;
+export interface DndZoneAttributes<T, TId = string> {
+    "on:consider"?: (e: CustomEvent<DndEvent<T, TId>>) => void;
+    "on:finalize"?: (e: CustomEvent<DndEvent<T, TId>>) => void;
+    onconsider?: (e: CustomEvent<DndEvent<T, TId>>) => void;
+    onfinalize?: (e: CustomEvent<DndEvent<T, TId>>) => void;
 }
 
 /**
@@ -103,15 +103,15 @@ export enum SOURCES {
     KEYBOARD = "keyboard"
 }
 
-export interface DndEventInfo {
+export interface DndEventInfo<TId = string> {
     trigger: TRIGGERS; // the type of dnd event that took place
-    id: string;
+    id: TId;
     source: SOURCES; // the type of interaction that the user used to perform the dnd operation
 }
 
-export type DndEvent<T = Item> = {
+export type DndEvent<T = Item, TId = string> = {
     items: T[];
-    info: DndEventInfo;
+    info: DndEventInfo<TId>;
 };
 
 export declare const SHADOW_ITEM_MARKER_PROPERTY_NAME: "isDndShadowItem";
@@ -123,7 +123,7 @@ export declare const SHADOW_ELEMENT_HINT_ATTRIBUTE_NAME = "data-is-dnd-shadow-it
 /**
  * Gets the true ID of an item, checking for shadow backup ID first
  */
-export declare function getTrueItemId(item: Item): any;
+export declare function getTrueItemId<TId = string>(item: Item): TId;
 
 /**
  * Allows the user to show/hide console debug output
