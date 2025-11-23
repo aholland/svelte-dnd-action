@@ -10,7 +10,7 @@ export {
     DRAGGED_ELEMENT_ID,
     overrideItemIdKeyNameBeforeInitialisingDndZones,
     setDebugMode,
-    getTrueItemId
+    getOriginallySuppliedItemId
 } from "./constants";
 
 export {setFeatureFlag, FEATURE_FLAG_NAMES} from "./featureFlags";

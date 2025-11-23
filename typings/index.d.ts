@@ -121,9 +121,9 @@ export declare const DRAGGED_ELEMENT_ID: "dnd-action-dragged-el";
 export declare const SHADOW_ELEMENT_HINT_ATTRIBUTE_NAME = "data-is-dnd-shadow-item-hint";
 
 /**
- * Gets the true ID of an item, checking for shadow backup ID first
+ * Gets the originally supplied ID of an item, checking for shadow backup ID first
  */
-export declare function getTrueItemId<TId = string>(item: Item): TId;
+export declare function getOriginallySuppliedItemId<TId = string>(item: Item): TId;
 
 /**
  * Allows the user to show/hide console debug output

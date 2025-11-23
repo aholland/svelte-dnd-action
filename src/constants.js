@@ -55,12 +55,12 @@ export function overrideItemIdKeyNameBeforeInitialisingDndZones(newKeyName) {
 }
 
 /**
- * Gets the true ID of an item, checking for shadow backup ID first
+ * Gets the originally supplied ID of an item, checking for shadow backup ID first
  * @param {Object} item - The item to get the ID from
- * @returns {*} The true ID of the item
+ * @returns {*} The originally supplied ID of the item
  */
-export function getTrueItemId(item) {
-    // If the item has a shadow backup ID, that's the true ID
+export function getOriginallySuppliedItemId(item) {
+    // If the item has a shadow backup ID, that's the originally supplied ID
     if (item[SHADOW_BACKUP_ID_PROPERTY_NAME]) {
         return item[SHADOW_BACKUP_ID_PROPERTY_NAME];
     }
